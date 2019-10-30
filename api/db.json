@@ -5,7 +5,7 @@
       "id": "1",
       "userId": "1212121212",
       "organisations": [],
-      "avatarUrl": "https://react.semantic-ui.com/images/avatar/small/steve.jpg",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/steve.jpg",
       "profession": "Dentist",
       "description": "Steve has his own practice for 5 years."
     },
@@ -14,7 +14,7 @@
       "id": "2",
       "userId": "2323232323",
       "organisations": [],
-      "avatarUrl": "https://react.semantic-ui.com/images/avatar/small/elliot.jpg",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/elliot.jpg",
       "profession": "Dentist",
       "description": "Elliot has his own practice for 5 years."
     },
@@ -23,7 +23,7 @@
       "id": "3",
       "userId": "34343434434",
       "organisations": [],
-      "avatarUrl": "https://react.semantic-ui.com/images/avatar/small/molly.png",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/molly.png",
       "profession": "Dentist",
       "description": "Molly has his own practice for 5 years."
     },
@@ -32,7 +32,7 @@
       "id": "4",
       "userId": "4545454545",
       "organisations": [],
-      "avatarUrl": "https://react.semantic-ui.com/images/avatar/small/daniel.jpg",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/daniel.jpg",
       "profession": "Designer",
       "description": "Daniel has his own practice for 5 years."
     },
@@ -48,7 +48,7 @@
           "name": "Dmytro Zubariev"
         }
       ],
-      "avatarUrl": "https://react.semantic-ui.com/images/avatar/small/steve.jpg",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/steve.jpg",
       "profession": "Dentist",
       "description": "Steve has his own practice for 5 years."
     },

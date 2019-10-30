@@ -1,7 +1,7 @@
 import React from 'react'
 import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import OrganisationSearch from '../organisation/OrganisationSearch';
+import UserSearch from '../user/UserSearch';
 import GoogleAuth from '../../GoogleAuth';
 import { connect } from 'react-redux';
 
@@ -17,7 +17,7 @@ class MenuComponent extends React.Component {
                 {this.props.isSignedIn && <Menu.Item as={Link} to='/dashboard' name="dashboard" />}
                 <Menu.Menu position='right'>
                     <Menu.Item>
-                        <OrganisationSearch />
+                        <UserSearch />
                     </Menu.Item>
                     <GoogleAuth />
                 </Menu.Menu>
@@ -28,7 +28,8 @@ class MenuComponent extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        isSignedIn: state.auth.isSignedIn
+        isSignedIn: state.auth.isSignedIn,
+        userId: state.auth.userId
     }
 }
 

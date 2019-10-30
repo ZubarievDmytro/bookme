@@ -18,8 +18,8 @@ class Bookings extends React.Component {
         )
     }
 
-    renderContent(bookingType){
-        const bookings = this.props.bookings[bookingType].map(book => {
+    renderContent(){
+        const bookings = this.props.bookings.map(book => {
             return (
                 <Card key={book.id}>
                     <Card.Content>
@@ -39,22 +39,12 @@ class Bookings extends React.Component {
     render (){
         return (
             <div>
-                <h2>My Bookings</h2>
-                {this.renderContent('myBookings')}
-                <h2>People who booked me</h2>
-                {this.renderContent('usersBookings')}
+                <h2>{this.props.title}</h2>
+                {this.renderContent()}
+                <br/>
             </div>
         )
     }
 }
 
-const mapStateToProps = state => {
-    const bookings = Object.values(state.users, 'id').filter(item => item.userId === state.auth.userId)[0].bookings;
-    return {
-       userId: state.auth.userId,
-       users: state.users,
-       bookings: bookings
-    }
-}
-
-export default connect(mapStateToProps, null)(Bookings);
+export default connect(null, null)(Bookings);

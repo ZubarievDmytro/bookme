@@ -1,8 +1,8 @@
 import React from 'react';
 import { Input } from 'semantic-ui-react';
 
-const OrganisationSearch = () => {
+const UserSearch = () => {
     return <Input icon='search' placeholder='Search...' />
 }
 
-export default OrganisationSearch;
+export default UserSearch;

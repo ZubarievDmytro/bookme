@@ -1,15 +1,17 @@
 import React from 'react'
-import { Card, Button, Image } from 'semantic-ui-react';
+import { Card, Button, Image, Loader } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../../actions/';
+import { fetchUsers } from '../../actions';
 
-class OrganisationsList extends React.Component {
+class UsersList extends React.Component {
     componentDidMount (){
         this.props.fetchUsers();
     }
 
     renderUsers () {
+        if (!this.props.users.length) return (<Loader active size={'large'}/>);
+
         return this.props.users.map(user => {
             return (
                 <Card key={user.id}>
@@ -20,10 +22,10 @@ class OrganisationsList extends React.Component {
                         size='mini'
                         src={user.avatarUrl}
                         />
-                        <Card.Header>Steve Sanders</Card.Header>
-                        <Card.Meta>Dentist</Card.Meta>
+                        <Card.Header>{user.name}</Card.Header>
+                        <Card.Meta>{user.profession}</Card.Meta>
                         <Card.Description>
-                            Steve has his own practice for 5 years.
+                            {user.description}
                         </Card.Description>
                     </Card.Content>
                     <Card.Content extra>
@@ -47,8 +49,8 @@ class OrganisationsList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: Object.values(state.users)
+        users: Object.values(state.users.usersList)
     }
 }
 
-export default connect(mapStateToProps, { fetchUsers })(OrganisationsList);
+export default connect(mapStateToProps, { fetchUsers })(UsersList);

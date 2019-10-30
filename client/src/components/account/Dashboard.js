@@ -1,40 +1,58 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { fetchUsers } from '../../actions';
+import { fetchUser } from '../../actions';
 import { Link } from 'react-router-dom';
-import { Card, Image, Button, Grid } from 'semantic-ui-react';
+import { Card, Image, Button, Grid, Loader } from 'semantic-ui-react';
 import Bookings from '../layout/Bookings';
 import _ from 'lodash';
 
 class Dashboard extends React.Component {
-    componentDidMount () {
-        this.props.fetchUsers();
+    state = {
+        status: 'loading',
+        user: null
+    }
+
+    componentDidMount = async () => {
+       this.loadUser();
+    }
+    
+    componentDidUpdate = async () => {
+        this.loadUser();
+
+        if (!this.props.isSignedIn && this.state.user != null) this.setState({user: null});
+    }
+
+    loadUser = async () => {
+        if(this.props.userId && this.state.user == null) {
+            const user = await fetchUser(this.props.userId);
+            this.setState({status: 'loaded', user});
+        }
     }
     
     renderContent (){
-        const { currentUser } = this.props;
-        if (this.props.isSignedIn && currentUser) {
+        if (this.props.isSignedIn === false) return 'You aren\'t signed in';
+        const { user } = this.state;
+        if (this.props.isSignedIn && user != null) {
             return (
                 <Grid columns='two' divided>
                     <Grid.Column width={5}>
                         <Card>
-                            <Image src={currentUser.avatarUrl} wrapped ui={false} />
+                            <Image src={user.avatarUrl} wrapped ui={false} />
                             <Card.Content>
-                            <Card.Header>{currentUser.name}</Card.Header>
+                            <Card.Header>{user.name}</Card.Header>
                             <Card.Description>
-                                {currentUser.description}
+                                {user.description}
                             </Card.Description>
                             </Card.Content>
                         </Card>
                         <Button as={Link} to="/dashboard/edit">Edit profile information</Button>
                     </Grid.Column>
                     <Grid.Column width={11}>
-                        <Bookings />
+                        <Bookings bookings={user.bookings.myBookings} title="My Bookings"/>
+                        <Bookings bookings={user.bookings.usersBookings} title="Users booked me"/>
                     </Grid.Column>
                 </Grid>
             )
-        } else {
-            return 'You aren\'t signed in'
         }
     }
     render (){
@@ -48,12 +66,11 @@ class Dashboard extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const currentUser = Object.values(state.users).filter(user => user.userId == state.auth.userId)[0];
+  
     return {
-        userId: state.auth.userId,
         isSignedIn: state.auth.isSignedIn,
-        currentUser
+        userId: state.auth.userId
     }
 }
 
-export default connect(mapStateToProps, { fetchUsers })(Dashboard);
+export default connect(mapStateToProps, null)(Dashboard);

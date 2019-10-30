@@ -19,3 +19,8 @@ export const fetchUsers = () => async dispatch => {
 
     dispatch({type: FETCH_USERS, payload: res.data});
 }
+
+export const fetchUser = userId => {
+    const res = users.get(`/users?userId=${userId}`).then(res => res.data[0]);
+    return res;
+}
