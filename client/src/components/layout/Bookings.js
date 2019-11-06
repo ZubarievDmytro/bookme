@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash';
 import { Card, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
@@ -8,25 +7,31 @@ class Bookings extends React.Component {
         //this.props.fetchBookings(this.props.userId);
     }
     
-    onDeleteClick (id){
+    onDeleteClick (id, bookingType){
+        alert(bookingType + ' - ' + id)
         //this.props.updateUser(this.props.bookings, this.props.userId, bookId);
     }
 
-    renderTime (time, id){
+    renderTime (book, bookingType){
         return (
-            <p>{time} <Icon onClick={() => this.onDeleteClick(id)} floated="right" color="red" name="window close outline"/></p>
+            <p>{book.time} <Icon onClick={() => this.onDeleteClick(book.id, bookingType)} floated="right" color="red" name="window close outline"/></p>
         )
     }
 
-    renderContent(){
-        const bookings = this.props.bookings.map(book => {
+    getUserInfo (userId){
+        return this.props.users.filter(user => user.userId === userId)[0];
+    }
+
+    renderContent(bookingType){
+        const bookings = this.props.bookings[bookingType].map(book => {
+            const user = this.getUserInfo(book.userId);
             return (
                 <Card key={book.id}>
                     <Card.Content>
-                        <Card.Header>{book.userName}</Card.Header>
+                        <Card.Header>{user.name}</Card.Header>
                         <Card.Meta>{book.date}</Card.Meta>
                         <Card.Description>
-                            {this.renderTime(book.time, book.id)}
+                            {this.renderTime(book, bookingType)}
                         </Card.Description>
                     </Card.Content>
                 </Card>
@@ -39,12 +44,18 @@ class Bookings extends React.Component {
     render (){
         return (
             <div>
-                <h2>{this.props.title}</h2>
-                {this.renderContent()}
-                <br/>
+                <h2>My Bookings</h2>
+                {this.renderContent('myBookings')}
+                <h2>Users booked me</h2>
+                {this.renderContent('usersBookings')}
             </div>
         )
     }
 }
 
-export default connect(null, null)(Bookings);
+const mapStateToProps = state => {
+    return {
+        users: Object.values(state.users.usersList)
+    }
+}
+export default connect(mapStateToProps, null)(Bookings);

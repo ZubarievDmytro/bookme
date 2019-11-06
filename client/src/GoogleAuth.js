@@ -1,10 +1,12 @@
 import React from 'react'
 import { Menu, Loader, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { SignIn, SignOut } from './actions';
+import { SignIn, SignOut, fetchUsers } from './actions';
 
 class GoogleAuth extends React.Component {
     componentDidMount() {
+        this.props.fetchUsers();
+
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({
                 clientId: '933713769986-sc19lpemkpj7p3kmq4l4d1knekrr1q7i.apps.googleusercontent.com',
@@ -17,10 +19,10 @@ class GoogleAuth extends React.Component {
         });
     }
 
-    onAuthChange = async isSignedIn => {
-        
+    onAuthChange = isSignedIn => {
         if(isSignedIn) {
-            this.props.SignIn(this.auth.currentUser.get().getId());
+            const user = this.props.users.filter(user => user.userId === this.auth.currentUser.get().getId());
+            this.props.SignIn(user[0]);
         } else {
             this.props.SignOut();
         }
@@ -52,8 +54,9 @@ class GoogleAuth extends React.Component {
 const mapStateToProps = state => {
     return {
         isSignedIn: state.auth.isSignedIn,
-        userId: state.auth.userId
+        user: state.auth.user,
+        users: Object.values(state.users.usersList)
     }
 }
 
-export default connect(mapStateToProps, { SignIn, SignOut })(GoogleAuth);
+export default connect(mapStateToProps, { SignIn, SignOut, fetchUsers })(GoogleAuth);

@@ -1,10 +1,10 @@
 import { SIGN_IN, SIGN_OUT, FETCH_USERS } from './actionType';
 import users from '../apis/users';
 
-export const SignIn = id => {
+export const SignIn = user => {
     return {
         type: SIGN_IN,
-        payload: id
+        payload: user
     }
 }
 

@@ -7,7 +7,7 @@ import UserPage from './user/UserPage';
 import Dashboard from './account/Dashboard';
 import { Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import DashboardCreate from './account/DashboardUpdate';
+import DashboardUpdate from './account/DashboardUpdate';
 
 class App extends React.Component {
     render (){
@@ -20,7 +20,7 @@ class App extends React.Component {
                             <Route path='/' exact component={UsersList} />
                             <Route path='/users/:id' component={UserPage} />
                             <Route path='/dashboard' exact component={Dashboard} />
-                            <Route path='/dashboard/create' exact component={DashboardCreate} />
+                            <Route path='/dashboard/edit' exact component={DashboardUpdate} />
                         </Switch>
                     </div>
                 </Router>
