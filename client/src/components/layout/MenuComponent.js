@@ -17,7 +17,7 @@ class MenuComponent extends React.Component {
                 {this.props.isSignedIn && <Menu.Item as={Link} to='/dashboard' name="dashboard" />}
                 <Menu.Menu position='right'>
                     <Menu.Item>
-                        <UserSearch />
+                        <UserSearch users={this.props.users}/>
                     </Menu.Item>
                     <GoogleAuth />
                 </Menu.Menu>
@@ -29,7 +29,8 @@ class MenuComponent extends React.Component {
 const mapStateToProps = state => {
     return {
         isSignedIn: state.auth.isSignedIn,
-        userId: state.auth.userId
+        userId: state.auth.userId,
+        users: Object.values(state.users)
     }
 }
 

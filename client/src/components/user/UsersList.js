@@ -28,11 +28,13 @@ class UsersList extends React.Component {
                             {user.description}
                         </Card.Description>
                     </Card.Content>
-                    <Card.Content extra>
-                        <Button basic color="green" floated='right' as={Link} to={`/users/${user.userId}`} >
-                            Book me
-                        </Button>
-                    </Card.Content>
+                    {this.props.isSignedIn && this.props.userId !== user.userId &&
+                        <Card.Content extra>
+                            <Button basic color="green" floated='right' as={Link} to={`/users/${user.userId}`} >
+                                Book me
+                            </Button>
+                        </Card.Content>
+                    }
                 </Card>
             )
         })
@@ -49,7 +51,9 @@ class UsersList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: Object.values(state.users)
+        users: Object.values(state.users),
+        isSignedIn: state.auth.isSignedIn,
+        userId: state.auth.user && state.auth.user.userId
     }
 }
 

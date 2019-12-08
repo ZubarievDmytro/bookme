@@ -7,6 +7,7 @@
       "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/elliot.jpg",
       "profession": "Dentist",
       "description": "Steve has his own practice for 5 years.",
+      "title": "Steve Sanders",
       "bookings": {
         "shedule": [
           "9",
@@ -17,30 +18,69 @@
           "15/12/2019",
           "14/12/2019"
         ],
-        "myBookings": [],
-        "usersBookings": [
+        "myBookings": [
           {
-            "id": "bc44b7e9-cf53-4fb9-94df-3bd2a6da0088",
+            "id": "bc44b7e9-cf53-4fb9-dddd-3bd2a6da0088",
             "date": "10/12/2019",
             "time": 10,
             "userId": "109322648872785029479"
-          },
-          {
-            "id": "e7059b1b-d49d-4b84-b84a-00f2eca17e7d",
-            "date": "11/12/2019",
-            "time": 11,
-            "userId": "109322648872785029479"
-          },
-          {
-            "id": "beca27b2-6e17-4641-af4a-ded70b15a7bd",
-            "date": "12/12/2019",
-            "time": 12,
-            "userId": "109322648872785029479"
-          },
+          }
+        ],
+        "usersBookings": [
           {
             "id": "861a1daf-451e-456d-86a3-565f352abfce",
             "date": "09/12/2019",
             "time": 9,
+            "userId": "109322648872785029479"
+          },
+          {
+            "id": "322d0dc6-604a-484f-a8c1-3e5cecc6d030",
+            "date": "18/12/2019",
+            "time": 15,
+            "userId": "109322648872785029479"
+          },
+          {
+            "id": "ed8a1869-b0ae-4860-ab27-026e58a4cec2",
+            "date": "18/12/2019",
+            "time": 12,
+            "userId": "109322648872785029479"
+          },
+          {
+            "id": "1bccc320-6180-4913-93f2-571a25d34222",
+            "date": "25/12/2019",
+            "time": 14,
+            "userId": "109322648872785029479"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Elliot Sanders",
+      "id": "222222222222222",
+      "userId": "222222222222222",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/steve.jpg",
+      "profession": "Backend Developer",
+      "description": "Elliot has his own practice for 5 years.",
+      "title": "Elliot Sanders",
+      "bookings": {
+        "shedule": [
+          "9",
+          "18"
+        ],
+        "disabledDates": [],
+        "myBookings": [
+          {
+            "id": "bc44b7e9-cf53-aaaa-dddd-3bd2a6da0088",
+            "date": "17/12/2019",
+            "time": 15,
+            "userId": "109322648872785029479"
+          }
+        ],
+        "usersBookings": [
+          {
+            "id": "677c0086-caaf-4e17-b2ec-5250f5c8cc7a",
+            "date": "13/12/2019",
+            "time": 12,
             "userId": "109322648872785029479"
           }
         ]
@@ -53,38 +93,58 @@
       "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/steve.jpg",
       "profession": "Frontend Developer",
       "description": "Dmytro has his own practice for 5 years.",
+      "title": "Dmytro Zubariev",
       "bookings": {
         "shedule": [
           "10",
-          "20"
+          "19"
         ],
         "myBookings": [
-          {
-            "id": "bc44b7e9-cf53-4fb9-94df-3bd2a6da0088",
-            "date": "10/12/2019",
-            "time": 10,
-            "userId": "1212121212"
-          },
-          {
-            "id": "e7059b1b-d49d-4b84-b84a-00f2eca17e7d",
-            "date": "11/12/2019",
-            "time": 11,
-            "userId": "1212121212"
-          },
-          {
-            "id": "beca27b2-6e17-4641-af4a-ded70b15a7bd",
-            "date": "12/12/2019",
-            "time": 12,
-            "userId": "1212121212"
-          },
           {
             "id": "861a1daf-451e-456d-86a3-565f352abfce",
             "date": "09/12/2019",
             "time": 9,
             "userId": "1212121212"
+          },
+          {
+            "id": "322d0dc6-604a-484f-a8c1-3e5cecc6d030",
+            "date": "18/12/2019",
+            "time": 15,
+            "userId": "1212121212"
+          },
+          {
+            "id": "ed8a1869-b0ae-4860-ab27-026e58a4cec2",
+            "date": "18/12/2019",
+            "time": 12,
+            "userId": "1212121212"
+          },
+          {
+            "id": "1bccc320-6180-4913-93f2-571a25d34222",
+            "date": "25/12/2019",
+            "time": 14,
+            "userId": "1212121212"
+          },
+          {
+            "id": "677c0086-caaf-4e17-b2ec-5250f5c8cc7a",
+            "date": "13/12/2019",
+            "time": 12,
+            "userId": "222222222222222"
           }
         ],
-        "usersBookings": []
+        "usersBookings": [
+          {
+            "id": "bc44b7e9-cf53-4fb9-dddd-3bd2a6da0088",
+            "date": "10/12/2019",
+            "time": 10,
+            "userId": "1212121212"
+          },
+          {
+            "id": "bc44b7e9-cf53-aaaa-dddd-3bd2a6da0088",
+            "date": "17/12/2019",
+            "time": 15,
+            "userId": "222222222222222"
+          }
+        ]
       }
     }
   ]
