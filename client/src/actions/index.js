@@ -1,4 +1,4 @@
-import { SIGN_IN, SIGN_OUT, FETCH_USERS } from './actionType';
+import { SIGN_IN, SIGN_OUT, FETCH_USERS, UPDATE_USERS } from './actionType';
 import users from '../apis/users';
 
 export const SignIn = user => {
@@ -23,4 +23,11 @@ export const fetchUsers = () => async dispatch => {
 export const fetchUser = userId => {
     const res = users.get(`/users?userId=${userId}`).then(res => res.data[0]);
     return res;
+}
+
+export const updateUsers = (userUpdated, currentUserUpdated) => async dispatch => {
+    await users.patch(`/users/${userUpdated.id}`, userUpdated);
+    await users.patch(`/users/${currentUserUpdated.id}`, currentUserUpdated);
+
+    dispatch({type: UPDATE_USERS, payload: [userUpdated, currentUserUpdated]});
 }

@@ -49,7 +49,7 @@ class UsersList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: Object.values(state.users.usersList)
+        users: Object.values(state.users)
     }
 }
 

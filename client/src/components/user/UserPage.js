@@ -1,22 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { Card, Image, Grid, Loader } from 'semantic-ui-react';
-import { fetchUser } from '../../actions';
+import BookingsTable from '../layout/BookingsTable';
 
 class UserPage extends React.Component {
-    state = {
-        user: null
-    }
-
-    componentDidMount = async () => {
-        const user = await fetchUser(this.props.match.params.id);
-
-        this.setState({user});
-    }
-
     renderUser (){
-        const { user } = this.state;
-        
+        const user = this.props.users[this.props.match.params.id];
         if (user && this.props.match.params.id === user.userId){
             return (
                 <Grid columns='two' divided>
@@ -32,7 +21,7 @@ class UserPage extends React.Component {
                         </Card>
                     </Grid.Column>
                     <Grid.Column width={11}>
-                        Booking Table
+                        <BookingsTable user={user} />
                     </Grid.Column>
                 </Grid>
             )
@@ -48,4 +37,10 @@ class UserPage extends React.Component {
     }
 }
 
-export default connect(null, null)(UserPage);
+const mapStateToProps = state => {
+    return {
+        users: state.users
+    }
+}
+
+export default connect(mapStateToProps, null)(UserPage);

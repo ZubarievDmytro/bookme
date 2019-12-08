@@ -55,7 +55,7 @@ const mapStateToProps = state => {
     return {
         isSignedIn: state.auth.isSignedIn,
         user: state.auth.user,
-        users: Object.values(state.users.usersList)
+        users: Object.values(state.users)
     }
 }
 

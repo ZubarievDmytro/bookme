@@ -1,35 +1,50 @@
 import React from 'react'
 import { Card, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { updateUsers } from '../../actions';
 
-class Bookings extends React.Component {
-    componentDidMount() {
-        //this.props.fetchBookings(this.props.userId);
-    }
+class Bookings extends React.Component {    
+    onDeleteClick (book){
+        const { users, signedUser } = this.props;
+        
+        let user = users.filter(user => user.userId === book.userId)[0];
+        
+        let usersBookings = [...user.bookings.usersBookings].filter(booking => booking.id !== book.id);
+       
+        let myBookings = [...signedUser.bookings.myBookings].filter(booking => booking.id !== book.id);
+        const userUpdated = {
+            ...user, bookings: {
+                ...user.bookings,
+                usersBookings
+            }
+        };
     
-    onDeleteClick (id, bookingType){
-        alert(bookingType + ' - ' + id)
-        //this.props.updateUser(this.props.bookings, this.props.userId, bookId);
+        const currentUserUpdated = {
+            ...signedUser, bookings: {
+                ...signedUser.bookings,
+                myBookings
+            }
+        };
+
+        this.props.updateUsers(userUpdated, currentUserUpdated);
     }
 
     renderTime (book, bookingType){
         return (
-            <p>{book.time} <Icon onClick={() => this.onDeleteClick(book.id, bookingType)} floated="right" color="red" name="window close outline"/></p>
+            <p>{book.time}:00 {bookingType === 'myBookings' && <Icon onClick={() => this.onDeleteClick(book)} floated="right" color="red" name="window close outline"/>}</p>
         )
     }
 
-    getUserInfo (userId){
-        return this.props.users.filter(user => user.userId === userId)[0];
-    }
-
     renderContent(bookingType){
+        
         const bookings = this.props.bookings[bookingType].map(book => {
-            const user = this.getUserInfo(book.userId);
+            let userName = this.props.users.filter(user => user.userId === book.userId)[0].name;
+            const date = book.date;
             return (
                 <Card key={book.id}>
                     <Card.Content>
-                        <Card.Header>{user.name}</Card.Header>
-                        <Card.Meta>{book.date}</Card.Meta>
+                        <Card.Header>{userName}</Card.Header>
+                        <Card.Meta>{date}</Card.Meta>
                         <Card.Description>
                             {this.renderTime(book, bookingType)}
                         </Card.Description>
@@ -55,7 +70,9 @@ class Bookings extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: Object.values(state.users.usersList)
+        signedUser: state.users[state.auth.user && state.auth.user.userId],
+        users: Object.values(state.users)
     }
+    
 }
-export default connect(mapStateToProps, null)(Bookings);
+export default connect(mapStateToProps, { updateUsers })(Bookings);

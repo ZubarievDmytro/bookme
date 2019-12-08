@@ -1,92 +1,93 @@
 {
-    "users": [
-      {
-        "name":"Steve Sanders",
-        "id":"1",
-        "userId":"1212121212",
-        "organisations":[],
-        "avatarUrl":"https://react.semantic-ui.com/images/avatar/small/steve.jpg",
-        "profession":"Dentist",
-        "description":"Steve has his own practice for 5 years."
-      },
-      {
-        "name":"Elliot Sanders",
-        "id":"2",
-        "userId":"2323232323",
-        "organisations":[],
-        "avatarUrl":"https://react.semantic-ui.com/images/avatar/small/elliot.jpg",
-        "profession":"Dentist",
-        "description":"Elliot has his own practice for 5 years."
-      },
-      {
-        "name":"Molly Sanders",
-        "id":"3",
-        "userId":"34343434434",
-        "organisations":[],
-        "avatarUrl":"https://react.semantic-ui.com/images/avatar/small/molly.png",
-        "profession":"Dentist",
-        "description":"Molly has his own practice for 5 years."
-      },
-      {
-        "name":"Daniel Sanders",
-        "id":"4",
-        "userId":"4545454545",
-        "organisations":[],
-        "avatarUrl":"https://react.semantic-ui.com/images/avatar/small/daniel.jpg",
-        "profession":"Designer",
-        "description":"Daniel has his own practice for 5 years."
-      },
-      {
-        "name":"Steve Sanders",
-        "id":"5",
-        "userId":"565656565",
-        "organisations":[
-          {
-            "id": 1,
-            "date": "13.12.1991",
-            "userId": "109322648872785029479",
-            "name": "Dmytro Zubariev"
-          }
+  "users": [
+    {
+      "name": "Steve Sanders",
+      "id": "1212121212",
+      "userId": "1212121212",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/elliot.jpg",
+      "profession": "Dentist",
+      "description": "Steve has his own practice for 5 years.",
+      "bookings": {
+        "shedule": [
+          "9",
+          "18"
         ],
-        "avatarUrl":"https://react.semantic-ui.com/images/avatar/small/steve.jpg",
-        "profession":"Dentist",
-        "description":"Steve has his own practice for 5 years."
-      },
-      {
-        "name":"Dmytro Zubariev",
-        "id":"6",
-        "userId":"109322648872785029479",
-        "bookings":[
+        "disabledDates": [
+          "13.12.2019",
+          "15.12.2019",
+          "14.12.2019"
+        ],
+        "myBookings": [
           {
             "id": 1,
-            "booked": [
-              {
-                "date": "13.12.2019",
-                "time": [
-                  "8:00-9:00"
-                ]
-              }
-            ],
-            "userId": "565656565",
-            "userName": "Steve Sanders"
+            "date": "2019-11-13",
+            "time": "8:00-9:00",
+            "userId": "109322648872785029479"
           },
           {
             "id": 2,
-            "booked": [
-              {
-                "date": "15.12.2019",
-                "time": [
-                  "10:00-11:00"
-                ]
-              }
-            ],
-            "userId": "4545454545",
-            "userName": "Daniel Sanders"
+            "date": "2019-11-15",
+            "time": "10:00-11:00",
+            "userId": "109322648872785029479"
           }
         ],
-        "avatarUrl":"https://react.semantic-ui.com/images/avatar/large/steve.jpg",
-        "profession":"Dentist",
-        "description":"Dmytro has his own practice for 5 years."
+        "usersBookings": [
+          {
+            "id": 1,
+            "date": "2019-11-8",
+            "time": "14:00-15:00",
+            "userId": "109322648872785029479"
+          },
+          {
+            "id": 2,
+            "date": "2019-11-01",
+            "time": "17:00-18:00",
+            "userId": "109322648872785029479"
+          }
+        ]
       }
-    ]
-  }
+    },
+    {
+      "name": "Dmytro Zubariev",
+      "id": "109322648872785029479",
+      "userId": "109322648872785029479",
+      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/steve.jpg",
+      "profession": "Frontend Developer",
+      "description": "Dmytro has his own practice for 5 years.",
+      "bookings": {
+        "shedule": [
+          "10",
+          "20"
+        ],
+        "myBookings": [
+          {
+            "id": 1,
+            "date": "2019-11-13",
+            "time": "8:00-9:00",
+            "userId": "109322648872785029479"
+          },
+          {
+            "id": 2,
+            "date": "2019-11-15",
+            "time": "10:00-11:00",
+            "userId": "109322648872785029479"
+          }
+        ],
+        "usersBookings": [
+          {
+            "id": 1,
+            "date": "2019-11-08",
+            "time": "14:00",
+            "userId": "1212121212"
+          },
+          {
+            "id": 2,
+            "date": "2019-11-01",
+            "time": "17:00",
+            "userId": "1212121212"
+          }
+        ]
+      }
+    }
+  ]
+}
