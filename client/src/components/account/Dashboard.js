@@ -1,12 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Card, Image, Button, Grid } from 'semantic-ui-react';
+import { Card, Image, Button, Grid, Loader } from 'semantic-ui-react';
 import Bookings from '../layout/Bookings';
 
 class Dashboard extends React.Component {
+    state = {
+        image: 'loading'
+    }
+    handleImageLoad () {
+        this.setState({image: 'loaded'})
+    }
     renderContent (){
+        
         const { isSignedIn, user } = this.props;
+
+        if (this.props.isSignedIn === '') return <Loader active size={'large'}/>;
         if (isSignedIn === false) return 'You aren\'t signed in';
         
         if (isSignedIn && user != null) {
@@ -14,7 +23,10 @@ class Dashboard extends React.Component {
                 <Grid columns='two' divided>
                     <Grid.Column width={5}>
                         <Card>
-                            <Image src={user.avatarUrl} wrapped ui={false} />
+                            
+                            {this.state.image === 'loading' && <div style={{'margin': '110px 0'}}><Loader active inline='centered' size={'medium'}/></div>}
+                           
+                            <Image src={user.avatarUrl} wrapped ui={false} onLoad={() => this.handleImageLoad()} />
                             <Card.Content>
                             <Card.Header>{user.name}</Card.Header>
                             <Card.Description>
@@ -42,10 +54,9 @@ class Dashboard extends React.Component {
 }
 
 const mapStateToProps = state => {
-    
     return {
         isSignedIn: state.auth.isSignedIn,
-        user: state.auth.user && state.users[state.auth.user.userId]
+        user: state.users && state.users.usersList[state.auth.user && state.auth.user.userId]
     }
 }
 

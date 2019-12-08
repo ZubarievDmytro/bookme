@@ -26,32 +26,7 @@
             "userId": "109322648872785029479"
           }
         ],
-        "usersBookings": [
-          {
-            "id": "861a1daf-451e-456d-86a3-565f352abfce",
-            "date": "09/12/2019",
-            "time": 9,
-            "userId": "109322648872785029479"
-          },
-          {
-            "id": "322d0dc6-604a-484f-a8c1-3e5cecc6d030",
-            "date": "18/12/2019",
-            "time": 15,
-            "userId": "109322648872785029479"
-          },
-          {
-            "id": "ed8a1869-b0ae-4860-ab27-026e58a4cec2",
-            "date": "18/12/2019",
-            "time": 12,
-            "userId": "109322648872785029479"
-          },
-          {
-            "id": "1bccc320-6180-4913-93f2-571a25d34222",
-            "date": "25/12/2019",
-            "time": 14,
-            "userId": "109322648872785029479"
-          }
-        ]
+        "usersBookings": []
       }
     },
     {
@@ -76,21 +51,14 @@
             "userId": "109322648872785029479"
           }
         ],
-        "usersBookings": [
-          {
-            "id": "677c0086-caaf-4e17-b2ec-5250f5c8cc7a",
-            "date": "13/12/2019",
-            "time": 12,
-            "userId": "109322648872785029479"
-          }
-        ]
+        "usersBookings": []
       }
     },
     {
       "name": "Dmytro Zubariev",
       "id": "109322648872785029479",
       "userId": "109322648872785029479",
-      "avatarUrl": "https://react.semantic-ui.com/images/avatar/large/steve.jpg",
+      "avatarUrl": "https://api.monosnap.com/file/download?id=NEwPdhBWAOdcIlPAT6NVZaRoHKBmiN",
       "profession": "Frontend Developer",
       "description": "Dmytro has his own practice for 5 years.",
       "title": "Dmytro Zubariev",
@@ -99,38 +67,7 @@
           "10",
           "19"
         ],
-        "myBookings": [
-          {
-            "id": "861a1daf-451e-456d-86a3-565f352abfce",
-            "date": "09/12/2019",
-            "time": 9,
-            "userId": "1212121212"
-          },
-          {
-            "id": "322d0dc6-604a-484f-a8c1-3e5cecc6d030",
-            "date": "18/12/2019",
-            "time": 15,
-            "userId": "1212121212"
-          },
-          {
-            "id": "ed8a1869-b0ae-4860-ab27-026e58a4cec2",
-            "date": "18/12/2019",
-            "time": 12,
-            "userId": "1212121212"
-          },
-          {
-            "id": "1bccc320-6180-4913-93f2-571a25d34222",
-            "date": "25/12/2019",
-            "time": 14,
-            "userId": "1212121212"
-          },
-          {
-            "id": "677c0086-caaf-4e17-b2ec-5250f5c8cc7a",
-            "date": "13/12/2019",
-            "time": 12,
-            "userId": "222222222222222"
-          }
-        ],
+        "myBookings": [],
         "usersBookings": [
           {
             "id": "bc44b7e9-cf53-4fb9-dddd-3bd2a6da0088",

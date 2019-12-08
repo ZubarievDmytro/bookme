@@ -3,7 +3,7 @@ import { DateInput } from 'semantic-ui-calendar-react';
 import { Button, Divider } from 'semantic-ui-react';
 import 'moment/locale/en-gb';
 import { connect } from 'react-redux';
-import { updateUsers } from '../../actions';
+import { updateBookings } from '../../actions';
 import uuid from 'uuid';
 
 class BookingsTable extends React.Component {
@@ -62,7 +62,7 @@ class BookingsTable extends React.Component {
             }
         };
 
-        this.props.updateUsers(userUpdated, currentUserUpdated)
+        this.props.updateBookings(userUpdated, currentUserUpdated);
     }
 
     renderTable (){
@@ -98,9 +98,9 @@ class BookingsTable extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        signedUser: state.users[state.auth.user && state.auth.user.userId],
+        signedUser: state.users && state.users.usersList[state.auth.user && state.auth.user.userId],
         isSignedIn: state.auth.isSignedIn
     }
 }
 
-export default connect(mapStateToProps, { updateUsers })(BookingsTable);
+export default connect(mapStateToProps, { updateBookings })(BookingsTable);

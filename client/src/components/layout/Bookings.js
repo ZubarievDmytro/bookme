@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { updateUsers } from '../../actions';
+import { updateBookings } from '../../actions';
 
 class Bookings extends React.Component {    
     onDeleteClick (book){
@@ -26,7 +26,7 @@ class Bookings extends React.Component {
             }
         };
 
-        this.props.updateUsers(userUpdated, currentUserUpdated);
+        this.props.updateBookings(userUpdated, currentUserUpdated);
     }
 
     renderTime (book, bookingType){
@@ -37,7 +37,7 @@ class Bookings extends React.Component {
 
     renderContent(bookingType){
         
-        const bookings = this.props.bookings[bookingType].map(book => {
+        let bookings = this.props.bookings[bookingType].map(book => {
             let userName = this.props.users.filter(user => user.userId === book.userId)[0].name;
             const date = book.date;
             return (
@@ -52,8 +52,11 @@ class Bookings extends React.Component {
                 </Card>
             )
         });
+
+        if (!bookings.length > 0) {bookings = <Card><Card.Content>No bookings yet</Card.Content></Card>};
+
         return (
-            <Card.Group>{bookings}</Card.Group>
+            <Card.Group itemsPerRow={3}>{bookings}</Card.Group>
         )
     }
     render (){
@@ -70,9 +73,9 @@ class Bookings extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        signedUser: state.users[state.auth.user && state.auth.user.userId],
-        users: Object.values(state.users)
+        signedUser: state.users && state.users.usersList[state.auth.user && state.auth.user.userId],
+        users: Object.values(state.users && state.users.usersList)
     }
     
 }
-export default connect(mapStateToProps, { updateUsers })(Bookings);
+export default connect(mapStateToProps, { updateBookings })(Bookings);

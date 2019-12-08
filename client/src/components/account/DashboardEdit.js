@@ -1,42 +1,31 @@
 import React from 'react';
-import { Form, Checkbox, Button, Grid } from 'semantic-ui-react';
-import history from '../../history';
+import _ from 'lodash';
+import { Grid, Loader } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import UserForm from '../user/UserForm';
+import { fetchUser, updateUser } from '../../actions'
 
-class DashboardCreate extends React.Component {
-    state = {
-       
+class DashboardEdit extends React.Component {
+    componentDidMount() {
+        this.props.fetchUser(this.props.match.params.id);
     }
-    onSaveClick (){
-        history.goBack();
+
+    onSubmit = formValues => {
+        this.props.updateUser(formValues, this.props.match.params.id);
     }
 
     renderForm (){
+        const { user } = this.props;
+        if (_.isEmpty(user)) return null;
+        if (this.props.isSignedIn === '') return <Loader active size={'large'}/>;
+        if (this.props.isSignedIn === false) return 'You aren\'t signed in';
         return (
             <Grid columns='two' divided>
-                <Grid.Column width={8}>
-                <Form>
-                    <Form.Field>
-                        <label>Full Name</label>
-                        <input placeholder='Full Name' />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Profession</label>
-                        <input placeholder='Profession' />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Description</label>
-                        <input placeholder='Description' />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Avatar URL</label>
-                        <input placeholder='Avatar URL' />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox label='Make my profile visible' />
-                    </Form.Field>
-                    <Button type='submit' onClick={() => this.onSaveClick()}>Save</Button>
-                </Form>
+                <Grid.Column width={8}>      
+                    <UserForm 
+                        onSubmit={this.onSubmit} 
+                        initialValues={_.pick(user, 'avatarUrl', 'description', 'name',  'profession')}
+                    />
                 </Grid.Column>
             </Grid>
         )
@@ -54,8 +43,9 @@ class DashboardCreate extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.auth.user
+        user: state.users && state.users.fetchedUser,
+        isSignedIn: state.auth.isSignedIn
     }
 }
 
-export default connect(mapStateToProps, null)(DashboardCreate); 
+export default connect(mapStateToProps, { fetchUser, updateUser })(DashboardEdit); 
