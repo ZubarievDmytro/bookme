@@ -1,6 +1,6 @@
 import React from 'react';
 import { DateInput } from 'semantic-ui-calendar-react';
-import { Button, Divider } from 'semantic-ui-react';
+import { Button, Divider, Message } from 'semantic-ui-react';
 import 'moment/locale/en-gb';
 import { connect } from 'react-redux';
 import { updateBookings } from '../../actions';
@@ -9,7 +9,11 @@ import uuid from 'uuid';
 class BookingsTable extends React.Component {
     state = {
         date: '',
-        time: ''
+        time: '',
+        message: {
+            status: '',
+            text: ''
+        }
     };
 
     handleChange = (event, {name, value}) => {
@@ -20,6 +24,13 @@ class BookingsTable extends React.Component {
 
     handleClick = (value) => {
         this.setState({ 'time': value });
+    }
+
+    clearMessage (){
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            this.setState({message: {status: '', text: ''}})
+        }, 4000)
     }
 
     renderButtons (){
@@ -62,14 +73,25 @@ class BookingsTable extends React.Component {
             }
         };
 
-        this.props.updateBookings(userUpdated, currentUserUpdated);
+        this.props.updateBookings(userUpdated, currentUserUpdated).then(() => {
+            this.setState({message: { status: 'success', text: 'You successfully booked ' + user.name + ' on ' + time + ':00  ' + date}});
+            this.clearMessage();
+        }).catch(err => {
+            this.setState({message: {status: 'negative', text: 'Something went wrong. Please try again.'}});
+            this.clearMessage();
+        });
     }
 
     renderTable (){
         const { disabledDates } = this.props.user.bookings;
-        const { date, time } = this.state;
+        const { date, time, message } = this.state;
         return (
             <>
+                <Message
+                    className={message.status}
+                    content={message.text}
+                    hidden={!message.text}
+                />
                 <DateInput
                     localization='en-gb'
                     inline

@@ -1,9 +1,22 @@
 import React from 'react'
-import { Card, Icon } from 'semantic-ui-react';
+import { Card, Icon, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { updateBookings } from '../../actions';
 
-class Bookings extends React.Component {    
+class Bookings extends React.Component {   
+    state = {
+        message: {
+            status: '',
+            text: ''
+        }
+    }
+    clearMessage (){
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            this.setState({message: {status: '', text: ''}})
+        }, 4000)
+    }
+
     onDeleteClick (book){
         const { users, signedUser } = this.props;
         
@@ -26,7 +39,13 @@ class Bookings extends React.Component {
             }
         };
 
-        this.props.updateBookings(userUpdated, currentUserUpdated);
+        this.props.updateBookings(userUpdated, currentUserUpdated).then(() => {
+            this.setState({message: { status: 'success', text: 'You successfully removed ' + userUpdated.name + ' on ' + book.time + ':00  ' + book.date}});
+            this.clearMessage();
+        }).catch(err => {
+            this.setState({message: {status: 'negative', text: 'Something went wrong. Please try again.'}});
+            this.clearMessage();
+        });;
     }
 
     renderTime (book, bookingType){
@@ -36,7 +55,6 @@ class Bookings extends React.Component {
     }
 
     renderContent(bookingType){
-        
         let bookings = this.props.bookings[bookingType].map(book => {
             let userName = this.props.users.filter(user => user.userId === book.userId)[0].name;
             const date = book.date;
@@ -60,8 +78,14 @@ class Bookings extends React.Component {
         )
     }
     render (){
+        let { message } = this.state;
         return (
             <div>
+                <Message
+                    className={message.status}
+                    content={message.text}
+                    hidden={!message.text}
+                />
                 <h2>My Bookings</h2>
                 {this.renderContent('myBookings')}
                 <h2>Users booked me</h2>
