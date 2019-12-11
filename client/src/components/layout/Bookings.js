@@ -97,8 +97,8 @@ class Bookings extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        signedUser: state.users && state.users.usersList[state.auth.user && state.auth.user.userId],
-        users: Object.values(state.users && state.users.usersList)
+        signedUser: state.users[state.auth.userId],
+        users: Object.values(state.users)
     }
     
 }

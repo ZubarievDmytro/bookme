@@ -24,7 +24,7 @@ class Dashboard extends React.Component {
                     <Grid.Column width={5}>
                         <Card>
                             
-                            {this.state.image === 'loading' && <div style={{'margin': '110px 0'}}><Loader active inline='centered' size={'medium'}/></div>}
+                            {this.state.image === 'loading' && <div style={{'margin': '10px 0'}}><Loader active inline='centered' size={'medium'}/></div>}
                            
                             <Image src={user.avatarUrl} wrapped ui={false} onLoad={() => this.handleImageLoad()} />
                             <Card.Content>
@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => {
     return {
         isSignedIn: state.auth.isSignedIn,
-        user: state.users && state.users.usersList[state.auth.user && state.auth.user.userId]
+        user: state.users[state.auth.userId]
     }
 }
 

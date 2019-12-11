@@ -3,12 +3,10 @@ import _ from 'lodash';
 import { Grid, Loader } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import UserForm from '../user/UserForm';
-import { fetchUser, updateUser } from '../../actions'
+import { updateUser } from '../../actions'
 
 class DashboardEdit extends React.Component {
-    componentDidMount() {
-        this.props.fetchUser(this.props.match.params.id);
-    }
+    state = { user: null }
 
     onSubmit = formValues => {
         this.props.updateUser(formValues, this.props.match.params.id);
@@ -41,11 +39,11 @@ class DashboardEdit extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        user: state.users && state.users.fetchedUser,
-        isSignedIn: state.auth.isSignedIn
+        isSignedIn: state.auth.isSignedIn,
+        user: state.users[ownProps.match.params.id]
     }
 }
 
-export default connect(mapStateToProps, { fetchUser, updateUser })(DashboardEdit); 
+export default connect(mapStateToProps, { updateUser })(DashboardEdit); 

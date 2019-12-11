@@ -51,9 +51,9 @@ class UsersList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: Object.values(state.users.usersList),
+        users: Object.values(state.users),
         isSignedIn: state.auth.isSignedIn,
-        userId: state.auth.user && state.auth.user.userId
+        userId: state.auth.userId
     }
 }
 

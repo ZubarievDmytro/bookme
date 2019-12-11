@@ -1,11 +1,11 @@
-import { SIGN_IN, SIGN_OUT, FETCH_USERS, UPDATE_BOOKINGS, FETCH_USER, UPDATE_USER } from './actionType';
+import { SIGN_IN, SIGN_OUT, FETCH_USERS, UPDATE_BOOKINGS, UPDATE_USER } from './actionType';
 import users from '../apis/users';
 import history from '../history';
 
-export const SignIn = user => {
+export const SignIn = userId => {
     return {
         type: SIGN_IN,
-        payload: user
+        payload: userId
     }
 }
 
@@ -21,9 +21,9 @@ export const fetchUsers = () => async dispatch => {
     dispatch({type: FETCH_USERS, payload: res.data});
 }
 
-export const fetchUser = userId => async dispatch => {
+export const fetchUser = userId => async () => {
     const res = await users.get(`/users?userId=${userId}`);
-    dispatch({type: FETCH_USER, payload: res.data[0]});
+    return res.data[0];
 }
 
 export const updateBookings = (userUpdated, currentUserUpdated) => async dispatch => {

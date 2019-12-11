@@ -16,6 +16,10 @@ class BookingsTable extends React.Component {
         }
     };
 
+    componentWillUnmount() {
+        clearTimeout(this.timer);
+    }
+    
     handleChange = (event, {name, value}) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({ [name]: value });
@@ -120,7 +124,7 @@ class BookingsTable extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        signedUser: state.users && state.users.usersList[state.auth.user && state.auth.user.userId],
+        signedUser: state.users[state.auth.userId],
         isSignedIn: state.auth.isSignedIn
     }
 }
