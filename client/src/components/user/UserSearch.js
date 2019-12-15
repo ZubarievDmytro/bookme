@@ -18,10 +18,16 @@ class UserSearch extends React.Component {
         setTimeout(() => {
         if (this.state.value.length < 1 || !this.props.users) return this.setState(initialState);
 
-        let source = [...this.props.users];
+        let source = [...this.props.users].map(user => {
+            return {
+                title: user.title,
+                description: user.description,
+                id: user.id
+            }
+        });
     
         const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-        const isMatch = (result) => re.test(result.name);
+        const isMatch = (result) => re.test(result.title);
 
         this.setState({
             isLoading: false,

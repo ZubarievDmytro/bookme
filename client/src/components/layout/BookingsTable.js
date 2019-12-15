@@ -44,7 +44,12 @@ class BookingsTable extends React.Component {
         for (let i = +shedule[0]; i < +shedule[1]; i++) {
             buttons.push(<Button name="time" className={this.state.time === i ? 'grey' : ''} key={i} onClick={() => this.handleClick(i)}>{i}:00</Button>);
         }
-        return buttons;
+        return (
+            <>
+            {buttons.length ? <h3>Choose time</h3> : <h3>No available time</h3>}
+            {buttons}
+            </>
+        );
     }
 
     onSaveBooking (){
@@ -108,7 +113,6 @@ class BookingsTable extends React.Component {
                     firstDayOfWeek="1"
                     dateFormat='DD/MM/YYYY'
                 />
-                <h3>Choose time</h3>
                 {this.renderButtons()}
                 <Divider />
                 {!this.props.isSignedIn && <p>Please Sign In to continue</p>}
