@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: 'http://dev-bookmenow.zubariev-dmytro.com:3090',
     mode: 'CORS',
     headers: {
         'Content-Type': 'application/json'
