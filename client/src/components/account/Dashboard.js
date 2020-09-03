@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
                             </Card.Description>
                             </Card.Content>
                         </Card>
-                        <Button as={Link} to={`/dashboard/edit/${user.id}`}>Edit profile information</Button>
+                        <Button as={Link} to={`/dashboard/edit/${user.userId}`}>Edit profile information</Button>
                     </Grid.Column>
                     <Grid.Column width={11}>
                         <Bookings bookings={user.bookings} user={user}/>

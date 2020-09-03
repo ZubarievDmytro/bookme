@@ -39,7 +39,7 @@ export const fetchUsers = () => async dispatch => {
 }
 
 export const fetchUser = userId => async () => {
-    const res = await users.get(`/users?userId=${userId}`);
+    const res = await users.get(`/users/${userId}`);
     return res.data[0];
 }
 
@@ -50,8 +50,8 @@ export const updateBookings = (userUpdated, currentUserUpdated) => async dispatc
     dispatch({type: UPDATE_BOOKINGS, payload: [userUpdated, currentUserUpdated]});
 }
 
-export const updateUser = (formValues, id) => async dispatch => {
-    const res = await users.patch(`/users/${id}`, formValues);
+export const updateUser = (formValues, userId) => async dispatch => {
+    const res = await users.patch(`/users/${userId}`, formValues);
     history.push('/dashboard');
     dispatch({type: UPDATE_USER, payload: res.data});
 }

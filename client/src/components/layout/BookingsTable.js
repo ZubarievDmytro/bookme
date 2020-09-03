@@ -38,12 +38,14 @@ class BookingsTable extends React.Component {
     }
 
     renderButtons (){
-        const { shedule } = this.props.user.bookings;
+        const shedule = this.props.user.bookings && this.props.user.bookings.shedule;
         let buttons = [];
-        
-        for (let i = +shedule[0]; i < +shedule[1]; i++) {
-            buttons.push(<Button name="time" className={this.state.time === i ? 'grey' : ''} key={i} onClick={() => this.handleClick(i)}>{i}:00</Button>);
+        if(shedule) {
+            for (let i = +shedule[0]; i < +shedule[1]; i++) {
+                buttons.push(<Button name="time" className={this.state.time === i ? 'grey' : ''} key={i} onClick={() => this.handleClick(i)}>{i}:00</Button>);
+            }
         }
+       
         return (
             <>
             {buttons.length ? <h3>Choose time</h3> : <h3>No available time</h3>}
@@ -92,7 +94,7 @@ class BookingsTable extends React.Component {
     }
 
     renderTable (){
-        const { disabledDates } = this.props.user.bookings;
+        const disabledDates = this.props.user.bookings &&  this.props.user.bookings.disabledDates;
         const { date, time, message } = this.state;
         return (
             <>
