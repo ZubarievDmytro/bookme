@@ -1,10 +1,9 @@
 import React from 'react';
 import { DateInput } from 'semantic-ui-calendar-react';
-import { Button, Divider, Message } from 'semantic-ui-react';
+import { Button, Divider, Message, Select } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import 'moment/locale/en-gb';
-import { connect } from 'react-redux';
-import { updateBookings } from '../../actions';
-import uuid from 'uuid';
+import _ from 'lodash';
 
 class BookingsTable extends React.Component {
     state = {
@@ -26,8 +25,8 @@ class BookingsTable extends React.Component {
         }
     }
 
-    handleClick = (value) => {
-        this.setState({ 'time': value });
+    onChange = (e, data) => {
+        this.setState({ 'time': data.value });
     }
 
     clearMessage (){
@@ -38,53 +37,30 @@ class BookingsTable extends React.Component {
     }
 
     renderButtons (){
-        const shedule = this.props.user.bookings && this.props.user.bookings.shedule;
-        let buttons = [];
-        if(shedule) {
-            for (let i = +shedule[0]; i < +shedule[1]; i++) {
-                buttons.push(<Button name="time" className={this.state.time === i ? 'grey' : ''} key={i} onClick={() => this.handleClick(i)}>{i}:00</Button>);
+        let schedule = this.props.user.schedule;
+
+        if (!schedule) schedule = [12, 18];
+        let timeOptions = [];
+        if(schedule) {
+            for (let i = +schedule[0]; i < +schedule[1]; i++) {
+                timeOptions.push({key: i, value: i, text: `${i}:00`});
             }
         }
        
         return (
             <>
-            {buttons.length ? <h3>Choose time</h3> : <h3>No available time</h3>}
-            {buttons}
+            {timeOptions.length ? <h3>Choose time</h3> : <h3>No available time</h3>}
+            <Select placeholder='Select your time' options={timeOptions} onChange={this.onChange} disabled={!timeOptions.length}/>
             </>
         );
     }
 
     onSaveBooking (){
-        const { user, signedUser } = this.props;
-        let { date, time } = this.state;
-        const id = uuid();
-        let usersBookings = [...user.bookings.usersBookings, {
-            id,
-            date,
-            time,
-            userId: signedUser.userId
-        }]
-        let myBookings = [...signedUser.bookings.myBookings, {
-            id,
-            date,
-            time,
-            userId: user.userId
-        }]
-        const userUpdated = {
-            ...user, bookings: {
-                ...user.bookings,
-                usersBookings
-            }
-        };
-    
-        const currentUserUpdated = {
-            ...signedUser, bookings: {
-                ...signedUser.bookings,
-                myBookings
-            }
-        };
-
-        this.props.updateBookings(userUpdated, currentUserUpdated).then(() => {
+        const [day, month, year] = this.state.date.split('/');
+        const { user } = this.props;
+        const { time, date } = this.state;
+        const bookingDate = `${day}-${month}-${year}`
+        this.props.onSaveBooking(user._id, {date: bookingDate, time: time, user: this.props.signedInUser}).then(() => {
             this.setState({message: { status: 'success', text: 'You successfully booked ' + user.name + ' on ' + time + ':00  ' + date}});
             this.clearMessage();
         }).catch(err => {
@@ -96,6 +72,7 @@ class BookingsTable extends React.Component {
     renderTable (){
         const disabledDates = this.props.user.bookings &&  this.props.user.bookings.disabledDates;
         const { date, time, message } = this.state;
+        const { signedInUser } = this.props;
         return (
             <>
                 <Message
@@ -117,8 +94,8 @@ class BookingsTable extends React.Component {
                 />
                 {this.renderButtons()}
                 <Divider />
-                {!this.props.isSignedIn && <p>Please Sign In to continue</p>}
-                <Button disabled={!date || !time || !this.props.isSignedIn ? true : false} onClick={() => this.onSaveBooking()}>Save Booking</Button>
+                {_.isEmpty(signedInUser) && <p>Please <Link to="/signin">Sign In</Link> or <Link to="/signup">Sign Up</Link> to continue</p>}
+                <Button disabled={_.isEmpty(signedInUser) || !date || !time ? true : false} onClick={() => this.onSaveBooking()}>Save Booking</Button>
             </>
         )
     }
@@ -128,11 +105,4 @@ class BookingsTable extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        signedUser: state.users[state.auth.userId],
-        isSignedIn: state.auth.isSignedIn
-    }
-}
-
-export default connect(mapStateToProps, { updateBookings })(BookingsTable);
+export default BookingsTable;

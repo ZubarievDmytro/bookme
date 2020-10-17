@@ -6,37 +6,37 @@ import { fetchUsers } from '../../actions';
 
 class UsersList extends React.Component {
     componentDidMount (){
-        this.props.fetchUsers();
+        if (!this.props.users.length) this.props.fetchUsers();
     }
 
     renderUsers () {
         if (!this.props.users.length) return (<Loader active size={'large'}/>);
 
         return this.props.users.map(user => {
-            return (
-                <Card key={user.id}>
-                    <Card.Content>
-                        <Image
-                        circular
-                        floated='right'
-                        size='mini'
-                        src={user.avatarUrl}
-                        />
-                        <Card.Header>{user.name}</Card.Header>
-                        <Card.Meta>{user.profession}</Card.Meta>
-                        <Card.Description>
-                            {user.description}
-                        </Card.Description>
-                    </Card.Content>
-                    {this.props.isSignedIn && this.props.userId !== user.userId &&
-                        <Card.Content extra>
-                            <Button basic color="green" floated='right' as={Link} to={`/users/${user.userId}`} >
-                                Book me
-                            </Button>
+                return (
+                    <Card key={user._id} as={Link} to={`/users/${user._id}`} >
+                        <Card.Content>
+                            <Image
+                            circular
+                            floated='right'
+                            size='mini'
+                            src={user.avatarUrl}
+                            />
+                            <Card.Header>{user.name}</Card.Header>
+                            <Card.Meta>{user.profession}</Card.Meta>
+                            <Card.Description>
+                                {user.description}
+                            </Card.Description>
                         </Card.Content>
-                    }
-                </Card>
-            )
+                        {this.props.userId !== user._id &&
+                            <Card.Content extra >
+                                <Button basic color="green" floated='right' >
+                                    Book me
+                                </Button>
+                            </Card.Content>
+                        }
+                    </Card>
+                )
         })
     }
     
@@ -51,8 +51,7 @@ class UsersList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: Object.values(state.users),
-        isSignedIn: state.auth.isSignedIn,
+        users: Object.values(state.users.usersList),
         userId: state.auth.userId
     }
 }

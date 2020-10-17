@@ -1,35 +1,94 @@
-import { SIGN_IN, SIGN_OUT, FETCH_USERS, UPDATE_BOOKINGS, UPDATE_USER } from './actionType';
+import { 
+    SIGN_IN, 
+    SIGN_UP,
+    SIGN_OUT, 
+    AUTH_ERROR,
+    CLEAR_AUTH_ERROR,
+    FETCH_USERS, 
+    FETCH_USER_BY_ID, 
+    FETCH_SIGNED_IN_USER, 
+    CLEAR_SIGNED_IN_USER,
+    UPDATE_USER,
+    DELETE_USER,
+    SAVE_BOOKING,
+    FETCH_BOOKINGS,
+    DELETE_BOOKING
+} from './actionType';
 import users from '../apis/users';
 import history from '../history';
 
-const initialUserData = {
-    "avatarUrl": "https://react.semantic-ui.com/images/wireframe/image.png",
-    "profession": "Job title",
-    "description": "There is no description yet",
-    "bookings": {
-      "shedule": [],
-      "myBookings": [],
-      "usersBookings": []
+export const signUp = formProps => async dispatch => {
+    const res = await users.post('/signup', formProps);
+    if(res.data.error) {
+        dispatch({
+            type: AUTH_ERROR,
+            payload: res.data.error
+        });
+        return;
     }
+    dispatch({
+        type: SIGN_UP,
+        payload: res.data
+    });
+
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('userId', res.data.userId);
+
+    history.push(`/dashboard/edit/${res.data.userId}`);
 }
 
-export const SignIn = userId => {
-    return {
+export const signIn = formProps => async dispatch => {
+    const res = await users.post('/signin', formProps);
+    if(res.data.error) {
+        dispatch({
+            type: AUTH_ERROR,
+            payload: res.data.error
+        });
+        return;
+    }
+    dispatch({
         type: SIGN_IN,
-        payload: userId
-    }
+        payload: res.data
+    });
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('userId', res.data.userId);
+    history.push('/dashboard');
 }
 
-export const SignOut = () => {
-    return {
-        type: SIGN_OUT 
-    }
+export const clearAuthError = () => dispatch => {
+    dispatch({
+        type: CLEAR_AUTH_ERROR
+    })
+}
+
+export const signOut = () => dispatch => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+
+    dispatch({type: SIGN_OUT})
 }
 
 export const createUser = userData => async dispatch => {
-    const res = await users.post(`/users?userId=${userData.userId}`, {...initialUserData, ...userData});
+    const res = await users.post(`/users`, {...userData});
+    history.push('/dashboard');
 
-    dispatch({type: UPDATE_USER, payload: res.data})
+    dispatch({type: SIGN_IN, payload: userData.userId});
+    dispatch({type: UPDATE_USER, payload: res.data});
+}
+
+export const deleteUser = (userId, token) => async dispatch => {
+    const res = await users.delete(`/users/delete/${userId}`, {
+        headers: {
+          'authorization': token
+        }
+    });
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    
+    dispatch({type: SIGN_OUT})
+    dispatch({type: DELETE_USER, payload: res.data});
+
+    history.push('/');
 }
 
 export const fetchUsers = () => async dispatch => {
@@ -38,20 +97,61 @@ export const fetchUsers = () => async dispatch => {
     dispatch({type: FETCH_USERS, payload: res.data});
 }
 
-export const fetchUser = userId => async () => {
+export const fetchUserById = userId => async dispatch => {
     const res = await users.get(`/users/${userId}`);
-    return res.data[0];
+    dispatch({type: FETCH_USER_BY_ID, payload: res.data});
 }
 
-export const updateBookings = (userUpdated, currentUserUpdated) => async dispatch => {
-    await users.patch(`/users/${userUpdated.id}`, userUpdated);
-    await users.patch(`/users/${currentUserUpdated.id}`, currentUserUpdated);
+export const fetchSignedInUser = (userId, token) => async dispatch => {
+    const res = await users.get(`/users/dashboard/${userId}`, {
+        headers: {
+          'authorization': token
+        }
+    });
 
-    dispatch({type: UPDATE_BOOKINGS, payload: [userUpdated, currentUserUpdated]});
+    const resBookings = await users.get(`/bookings/`, {
+        headers: {
+          'email': res.data.email
+        }
+    });
+
+    dispatch({type: FETCH_BOOKINGS, payload: resBookings.data});
+    dispatch({type: FETCH_SIGNED_IN_USER, payload: res.data});
 }
 
-export const updateUser = (formValues, userId) => async dispatch => {
-    const res = await users.patch(`/users/${userId}`, formValues);
+export const clearSignedInUser = () => dispatch => {
+    dispatch({type: CLEAR_SIGNED_IN_USER});
+}
+
+export const updateUser = (formValues, userId, token) => async dispatch => {
+    const res = await users.patch(`/users/${userId}`, formValues,
+    {
+        headers: {
+          'authorization': token
+        }
+    });
     history.push('/dashboard');
     dispatch({type: UPDATE_USER, payload: res.data});
+}
+
+export const saveBooking = (userId, bookingInfo) => async dispatch => {
+    const res = await users.post(`/bookings/${userId}`, bookingInfo);
+
+    dispatch({type: SAVE_BOOKING, payload: res.data});
+}
+
+export const fetchBookingsByEmail = (email) => async dispatch => {
+    const res = await users.get('/bookings/', email);
+
+    dispatch({type: FETCH_BOOKINGS, payload: res.data});
+}
+
+export const deleteBooking = (booking, token) => async dispatch => {
+    const res = await users.patch(`/bookings/${booking.user._id}`, booking, {
+        headers: {
+          'authorization': token
+        }
+    });
+
+    dispatch({type: DELETE_BOOKING, payload: res.data});
 }
