@@ -1,11 +1,34 @@
 import React from 'react'
-import { Menu } from 'semantic-ui-react';
+import { Menu, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import UserSearch from '../user/UserSearch';
-import GoogleAuth from '../../GoogleAuth';
+import { signOut, fetchUsers, clearSignedInUser } from '../../actions';
 import { connect } from 'react-redux';
 
 class MenuComponent extends React.Component {
+    onSignOutClick = () => {
+        this.props.signOut();
+        this.props.clearSignedInUser();
+    }
+
+    renderButtons = () => {
+        if( !this.props.isSignedIn ) {
+            return (
+                <>
+                    <Button as={Link} to='/signin' name="Sign in">Sign in</Button>
+                    <Button.Or />
+                    <Button as={Link} to='/signup' name="Sign up">Sign up</Button>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Button color="red" name="Sign Out" onClick={this.onSignOutClick}>Sign Out</Button>
+                </>
+            )
+        }
+    }
+
     render(){
         return (
             <Menu>
@@ -14,12 +37,16 @@ class MenuComponent extends React.Component {
                     to='/' 
                     name="home" 
                 />
-                {this.props.isSignedIn && <Menu.Item as={Link} to='/dashboard' name="dashboard" />}
+                {this.props.userId && <Menu.Item as={Link} to='/dashboard' name="dashboard" />}
                 <Menu.Menu position='right'>
                     <Menu.Item>
-                        <UserSearch users={this.props.users}/>
+                        <UserSearch users={this.props.users} fetchUsers={this.props.fetchUsers}/>
                     </Menu.Item>
-                    <GoogleAuth />
+                    <Menu.Item>
+                        <Button.Group>
+                            {this.renderButtons()}
+                        </Button.Group>
+                    </Menu.Item>
                 </Menu.Menu>
             </Menu>
         )
@@ -28,10 +55,10 @@ class MenuComponent extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        isSignedIn: state.auth.isSignedIn,
+        isSignedIn: state.auth.token,
         userId: state.auth.userId,
-        users: Object.values(state.users)
+        users: Object.values(state.users.usersList)
     }
 }
 
-export default connect(mapStateToProps, null)(MenuComponent);
+export default connect(mapStateToProps, { signOut, fetchUsers, clearSignedInUser })(MenuComponent);

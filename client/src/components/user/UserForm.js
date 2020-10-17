@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Form, Message } from 'semantic-ui-react'
-
+import { CheckboxField } from 'react-semantic-redux-form';
+import ScheduleSelector from '../layout/ScheduleSelector'
 class UserForm extends Component {
     componentDidMount() {
         this.props.initialize(this.props.initialValues);
@@ -27,6 +28,7 @@ class UserForm extends Component {
             </Form.Field>
         )
     }
+
     onSumbit = (formProps) => {
         this.props.onSubmit(formProps);
     }
@@ -35,9 +37,11 @@ class UserForm extends Component {
         return (
             <Form onSubmit={this.props.handleSubmit(this.onSumbit)}>
                 <Field name='name' label='Full Name' component={this.renderInput}/>
-                <Field name='profession' label='Profession' component={this.renderInput} />
+                <Field name='profession' label='Job Title' component={this.renderInput} />
                 <Field name='description' label='Description' component={this.renderInput} />
                 <Field name='avatarUrl' label='Avatar URL' component={this.renderInput} />
+                <ScheduleSelector />
+                <Field value='' name="visible" label='Make me visible' component={CheckboxField}/>
                 <Form.Button content='Save Information' />
             </Form>
         )
@@ -49,8 +53,6 @@ const validate = formValues => {
     
     if(!formValues.name) errors.name = 'You must enter a Full Name';
     if(!formValues.profession) errors.profession = 'You must enter a profession';
-    if(!formValues.description) errors.description = 'You must enter a description';
-    if(!formValues.avatarUrl) errors.avatarUrl = 'You must enter a avatar Url';
 
     return errors;
 }

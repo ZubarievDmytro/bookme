@@ -1,11 +1,10 @@
 import React from 'react'
-import { Menu, Loader, Button } from 'semantic-ui-react';
+import { Loader, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { SignIn, SignOut, fetchUsers, createUser } from './actions';
-
+import { signIn, signOut, fetchUsers, createUser } from './actions';
 class GoogleAuth extends React.Component {
     componentDidMount() {
-        this.props.fetchUsers();
+        //this.props.fetchUsers();
 
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({
@@ -24,20 +23,21 @@ class GoogleAuth extends React.Component {
             const userInfo = this.auth.currentUser.get();
             const id = userInfo.getId();
             let user = this.props.users.filter(user => user.userId === id);
-            
             if (!user[0]) {
                 const name = userInfo.getBasicProfile().getName();
                 const userData = {
                     id,
                     name,
                     "userId": id,
-                    "title": name
+                    "title": name,
+                    avatarUrl: userInfo.getBasicProfile().getImageUrl(),
+                    email: userInfo.getBasicProfile().getEmail(),
                 }
                 this.props.createUser(userData);
             }
-            this.props.SignIn(id);
+            this.props.signIn(id);
         } else {
-            this.props.SignOut();
+            this.props.signOut();
         }
     }
 
@@ -51,11 +51,11 @@ class GoogleAuth extends React.Component {
 
     renderAuthButton() {
         if(this.props.isSignedIn === 'loading') {
-            return <Menu.Item><Loader active inline size={'small'}/></Menu.Item>
+            return <Loader active inline size={'small'}/>
         } else if(this.props.isSignedIn) {
-            return <Menu.Item color='red' onClick={this.onSignOutClick}><Button color="red">Sign Out</Button></Menu.Item>
+            return <Button color='red' onClick={this.onSignOutClick}>Sign Out</Button>
         } else {
-            return <Menu.Item onClick={this.onSignInClick}><Button color="grey">Sign In</Button></Menu.Item>
+        return <Button onClick={this.onSignInClick} size={this.props.size}>{this.props.text}</Button>
         }
     }
     
@@ -71,4 +71,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { SignIn, SignOut, fetchUsers, createUser })(GoogleAuth);
+export default connect(mapStateToProps, { signIn, signOut, fetchUsers, createUser })(GoogleAuth);
