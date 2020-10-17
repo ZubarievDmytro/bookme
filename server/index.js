@@ -6,7 +6,7 @@ const router = require('./router');
 const app = express(); 
 const mongoose = require('mongoose');
 const cors = require('cors');
-mongoose.connect('mongodb://127.0.0.1:27017/users'); 
+mongoose.connect('mongodb://127.0.0.1:27017/bookmenow', { useNewUrlParser: true }); 
  
 app.use(morgan('combined'));
 app.use(cors());
