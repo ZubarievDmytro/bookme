@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 const PostSchema = require('./post');
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     email: { type: String, unique: true },
     password: { type: String },
     avatarUrl: String,
@@ -12,44 +13,69 @@ const userSchema = new Schema({
     visible: Boolean,
     schedule: [String],
     name: {
-        type: String,
-        validate: {
-            validator: (name) => name.length > 2,
-            message: 'Name must be longer than two characters'
-        }
+      type: String,
+      validate: {
+        validator: (name) => name.length > 2,
+        message: 'Name must be longer than two characters',
+      },
     },
-    bookings: [{
+    bookings: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'booking'
-    }]
-})
+        ref: 'booking',
+      },
+    ],
+  },
+  {
+    toObject: {
+      transform: (doc, obj) => {
+        obj.id = obj._id;
+        delete obj._id;
+        delete obj.password;
+      },
+    },
+    toJSON: {
+      transform: (doc, obj) => {
+        obj.id = obj._id;
+        delete obj._id;
+        delete obj.password;
+      },
+    },
+  }
+);
 
-userSchema.pre('save', function(next) {
-    const user = this;
-    if (!user.isModified('password')) return next();
-  
-    bcrypt.genSalt(10, function(err, salt) {
-        if (err) { return next(err); }
-        
-        bcrypt.hash(user.password, salt, null, function(err, hash) {
-            if (err) { return next(err); }
+userSchema.pre('save', function (next) {
+  const user = this;
+  if (!user.isModified('password')) return next();
 
-            user.password = hash;
-            next();
-        })
-    }) 
-})
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) {
+      return next(err);
+    }
 
-userSchema.methods.comparePassword = function(candidatePassword, callback) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-        if (err) { return callback(err); }
+    bcrypt.hash(user.password, salt, null, function (err, hash) {
+      if (err) {
+        return next(err);
+      }
 
-        callback(null, isMatch);
-    })
-}
+      user.password = hash;
+      next();
+    });
+  });
+});
 
-userSchema.virtual('postCount').get(function() {
-    return this.posts.length;
+userSchema.methods.comparePassword = function (candidatePassword, callback) {
+  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+    if (err) {
+      return callback(err);
+    }
+
+    callback(null, isMatch);
+  });
+};
+
+userSchema.virtual('postCount').get(function () {
+  return this.posts.length;
 });
 
 const User = mongoose.model('user', userSchema);
