@@ -1,67 +1,66 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Card, Image, Grid, Loader } from 'semantic-ui-react';
-import { fetchUserById, saveBooking } from '../../actions'
+import { fetchUserById, saveBooking } from '../../actions';
 import BookingsTable from '../layout/BookingsTable';
 
-class UserPage extends React.Component {
-    constructor(props){
-        super(props);
+const UserPage = (props) => {
+  const placeholderInfo = {
+    avatarUrl: 'https://simpleicon.com/wp-content/uploads/account.png',
+  };
 
-        this.placeholderInfo = {
-            avatarUrl: 'https://simpleicon.com/wp-content/uploads/account.png',
+  useEffect(() => {
+    if (!props.user) {
+      props.fetchUserById(props.match.params.id);
+    }
+  }, [props]);
 
-        };
-    }
+  const renderUser = () => {
+    const user = props.user || props.fetchedUser;
+    const { signedInUser } = props;
 
-    componentDidMount() {
-        if (this.props.user === undefined) this.props.fetchUserById(this.props.match.params.id);
+    if (user && props.match.params.id === user.id) {
+      return (
+        <Grid columns="two" divided>
+          <Grid.Column width={5}>
+            <Card>
+              <Image
+                src={user.avatarUrl || placeholderInfo.avatarUrl}
+                wrapped
+                ui={false}
+              />
+              <Card.Content>
+                <Card.Header>{user.name}</Card.Header>
+                <Card.Description>{user.description}</Card.Description>
+              </Card.Content>
+            </Card>
+          </Grid.Column>
+          <Grid.Column width={11}>
+            <BookingsTable
+              user={user}
+              signedInUser={signedInUser}
+              onSaveBooking={(userId, bookingInfo) =>
+                props.saveBooking(userId, bookingInfo)
+              }
+            />
+          </Grid.Column>
+        </Grid>
+      );
     }
-    
-    renderUser (){
-        const user = this.props.user || this.props.fetchedUser;
-       
-        if (user && this.props.match.params.id === user._id){
-            return (
-                <Grid columns='two' divided>
-                    <Grid.Column width={5}>
-                        <Card>
-                            <Image src={user.avatarUrl || this.placeholderInfo.avatarUrl} wrapped ui={false} />
-                            <Card.Content>
-                                <Card.Header>{user.name}</Card.Header>
-                                <Card.Description>
-                                    {user.description}
-                                </Card.Description>
-                            </Card.Content>
-                        </Card>
-                    </Grid.Column>
-                    <Grid.Column width={11}>
-                        <BookingsTable 
-                            user={user} 
-                            signedInUser={this.props.signedInUser} 
-                            onSaveBooking={(userId, bookingInfo) => this.props.saveBooking(userId, bookingInfo)}
-                        />
-                    </Grid.Column>
-                </Grid>
-            )
-        } else {
-            return (
-                <Loader active size={'large'}/>
-            )
-        }
-    }
-    
-    render (){
-        return this.renderUser();
-    }
-}
+    return <Loader active size="large" />;
+  };
+
+  return renderUser();
+};
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        fetchedUser: state.users.fetchedUser,
-        signedInUser: state.users.signedInUser,
-        user: state.users.usersList[ownProps.match.params.id],
-    }
-}
+  return {
+    fetchedUser: state.users.fetchedUser,
+    signedInUser: state.users.signedInUser,
+    user: state.users.usersList[ownProps.match.params.id],
+  };
+};
 
-export default connect(mapStateToProps, { fetchUserById, saveBooking })(UserPage);
+export default connect(mapStateToProps, { fetchUserById, saveBooking })(
+  UserPage
+);
