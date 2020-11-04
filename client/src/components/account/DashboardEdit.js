@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Grid, Loader, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import UserForm from '../user/UserForm';
 import { updateUser, fetchSignedInUser, deleteUser } from '../../actions';
 import UserModal from '../user/UserModal';
@@ -13,13 +13,21 @@ function DashboardEdit(props) {
     text: 'account',
   });
 
+  const history = useHistory();
+
   useEffect(() => {
     if (_.isEmpty(props.user))
       props.fetchSignedInUser(props.userId, props.token);
   });
 
-  const onSubmit = (formValues) => {
-    props.updateUser(formValues, props.match.params.id, props.token);
+  const onSubmit = async (formValues) => {
+    const res = await props.updateUser(
+      formValues,
+      props.match.params.id,
+      props.token
+    );
+
+    history.push(res.redirectTo);
   };
 
   const onDeleteClick = () => {
@@ -28,12 +36,13 @@ function DashboardEdit(props) {
     });
   };
 
-  const onModalClick = (status) => {
+  const onModalClick = async (status) => {
     if (status === 'yes') {
       setState({
         open: false,
       });
-      props.deleteUser(props.match.params.id, props.token);
+      const res = await props.deleteUser(props.match.params.id, props.token);
+      history.push(res.redirectTo);
     } else {
       setState({
         open: false,

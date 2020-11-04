@@ -15,7 +15,6 @@ import {
   DELETE_BOOKING,
 } from './actionType';
 import users from '../apis/users';
-import history from '../history';
 
 export const signUp = (formProps) => async (dispatch) => {
   const res = await users.post('/signup', formProps);
@@ -24,7 +23,7 @@ export const signUp = (formProps) => async (dispatch) => {
       type: AUTH_ERROR,
       payload: res.data.error,
     });
-    return;
+    return false;
   }
   dispatch({
     type: SIGN_UP,
@@ -34,7 +33,9 @@ export const signUp = (formProps) => async (dispatch) => {
   localStorage.setItem('token', res.data.token);
   localStorage.setItem('userId', res.data.userId);
 
-  history.push(`/dashboard/edit/${res.data.userId}`);
+  return {
+    redirectTo: `/dashboard/edit/${res.data.userId}`,
+  };
 };
 
 export const signIn = (formProps) => async (dispatch) => {
@@ -44,7 +45,7 @@ export const signIn = (formProps) => async (dispatch) => {
       type: AUTH_ERROR,
       payload: res.data.error,
     });
-    return;
+    return false;
   }
   dispatch({
     type: SIGN_IN,
@@ -52,7 +53,9 @@ export const signIn = (formProps) => async (dispatch) => {
   });
   localStorage.setItem('token', res.data.token);
   localStorage.setItem('userId', res.data.userId);
-  history.push('/dashboard');
+  return {
+    redirectTo: `/dashboard/`,
+  };
 };
 
 export const clearAuthError = () => (dispatch) => {
@@ -68,14 +71,6 @@ export const signOut = () => (dispatch) => {
   dispatch({ type: SIGN_OUT });
 };
 
-export const createUser = (userData) => async (dispatch) => {
-  const res = await users.post(`/users`, { ...userData });
-  history.push('/dashboard');
-
-  dispatch({ type: SIGN_IN, payload: userData.userId });
-  dispatch({ type: UPDATE_USER, payload: res.data });
-};
-
 export const deleteUser = (userId, token) => async (dispatch) => {
   const res = await users.delete(`/users/delete/${userId}`, {
     headers: {
@@ -88,7 +83,9 @@ export const deleteUser = (userId, token) => async (dispatch) => {
   dispatch({ type: SIGN_OUT });
   dispatch({ type: DELETE_USER, payload: res.data });
 
-  history.push('/');
+  return {
+    redirectTo: `/`,
+  };
 };
 
 export const fetchUsers = () => async (dispatch) => {
@@ -129,8 +126,12 @@ export const updateUser = (formValues, userId, token) => async (dispatch) => {
       authorization: token,
     },
   });
-  history.push('/dashboard');
+
   dispatch({ type: UPDATE_USER, payload: res.data });
+
+  return {
+    redirectTo: '/dashboard',
+  };
 };
 
 export const saveBooking = (userId, bookingInfo) => async (dispatch) => {

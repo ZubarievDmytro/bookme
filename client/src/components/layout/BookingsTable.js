@@ -103,11 +103,6 @@ class BookingsTable extends React.Component {
 
     return (
       <>
-        <Message
-          className={message.status}
-          content={message.text}
-          hidden={!message.text}
-        />
         <DateInput
           localization="en-gb"
           inline
@@ -128,6 +123,11 @@ class BookingsTable extends React.Component {
             <Link to="/signup">Sign Up</Link> to continue
           </p>
         )}
+        <Message
+          className={message.status}
+          content={message.text}
+          hidden={!message.text}
+        />
         <Button
           disabled={_.isEmpty(signedInUser) || !date || !time}
           onClick={() => this.onSaveBooking()}

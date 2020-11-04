@@ -1,13 +1,17 @@
 import React from 'react';
 import { Divider } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import AuthForm from './AuthForm';
 import { signIn } from '../../actions';
 
 function SignIn(props) {
   const { error } = props;
-  const onSubmit = () => {
-    props.signIn(props.auth.values);
+  const history = useHistory();
+  const onSubmit = async () => {
+    const res = await props.signIn(props.auth.values);
+
+    history.push(res.redirectTo);
   };
 
   return (

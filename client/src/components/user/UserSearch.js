@@ -1,29 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import { Search } from 'semantic-ui-react';
-import history from '../../history';
 
-const initialState = { isLoading: false, results: [], value: '' };
+const UserSearch = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState([]);
+  const [valueState, setValue] = useState('');
 
-class UserSearch extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = initialState;
-  }
+  const history = useHistory();
 
-  handleResultSelect = (e, { result }) => {
+  const handleResultSelect = (e, { result }) => {
     history.push(`/users/${result.id}`);
-    this.setState(initialState);
+    setIsLoading(false);
+    setResults([]);
+    setValue('');
   };
 
-  handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value });
+  const handleSearchChange = (e, { value }) => {
+    setIsLoading(true);
+    setValue(value);
 
     setTimeout(() => {
-      const { value: stateValue } = this.state;
-      const { users } = this.props;
-      if (stateValue.length < 1 || !users) {
-        return this.setState(initialState);
+      const { users } = props;
+      if (value.length < 1 || !users) {
+        setIsLoading(false);
+        setResults([]);
+        setValue('');
+        return;
       }
 
       const source = [...users].map((user) => {
@@ -35,36 +39,31 @@ class UserSearch extends React.Component {
         };
       });
 
-      const re = new RegExp(_.escapeRegExp(stateValue), 'i');
+      const re = new RegExp(_.escapeRegExp(valueState), 'i');
       const isMatch = (result) => re.test(result.title);
 
-      return this.setState({
-        isLoading: false,
-        results: _.filter(source, isMatch),
-      });
+      setIsLoading(false);
+      setResults(_.filter(source, isMatch));
     }, 300);
   };
 
-  onFocus = () => {
-    const { users, fetchUsers } = this.props;
+  const onFocus = () => {
+    const { users, fetchUsers } = props;
     if (!users.length) fetchUsers();
   };
 
-  render() {
-    const { isLoading, value, results } = this.state;
-    return (
-      <Search
-        loading={isLoading}
-        onResultSelect={this.handleResultSelect}
-        onSearchChange={_.debounce(this.handleSearchChange, 500, {
-          leading: true,
-        })}
-        onFocus={this.onFocus}
-        results={results}
-        value={value}
-      />
-    );
-  }
-}
+  return (
+    <Search
+      loading={isLoading}
+      onResultSelect={handleResultSelect}
+      onSearchChange={_.debounce(handleSearchChange, 500, {
+        leading: true,
+      })}
+      onFocus={onFocus}
+      results={results}
+      value={valueState}
+    />
+  );
+};
 
 export default UserSearch;

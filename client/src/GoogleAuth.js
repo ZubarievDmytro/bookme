@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loader, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { signIn, signOut, fetchUsers, createUser } from './actions';
+import { signIn, signOut, fetchUsers } from './actions';
 
 class GoogleAuth extends React.Component {
   componentDidMount() {
@@ -95,5 +95,4 @@ export default connect(mapStateToProps, {
   signIn,
   signOut,
   fetchUsers,
-  createUser,
 })(GoogleAuth);

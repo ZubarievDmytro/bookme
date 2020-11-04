@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Card, Image, Grid, Loader } from 'semantic-ui-react';
 import { fetchUserById, saveBooking } from '../../actions';
@@ -10,7 +11,7 @@ const UserPage = (props) => {
   };
 
   useEffect(() => {
-    if (!props.user) {
+    if (_.isEmpty(props.user) && _.isEmpty(props.fetchedUser)) {
       props.fetchUserById(props.match.params.id);
     }
   }, [props]);
