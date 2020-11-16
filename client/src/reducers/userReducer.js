@@ -31,7 +31,10 @@ export default (
       return { ...state, signedInUser: null };
     case SAVE_BOOKING:
       if (_.isEmpty(state.usersList)) {
-        return state;
+        return {
+          ...state,
+          fetchedBookings: [...state.fetchedBookings, action.payload[1]],
+        };
       }
       return {
         ...state,
