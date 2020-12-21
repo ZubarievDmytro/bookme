@@ -1,6 +1,6 @@
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import AuthForm from './authForm';
+import AuthForm from './AuthForm';
 import { clearAuthError } from '../../../../actions';
 
 const validate = (formValues) => {

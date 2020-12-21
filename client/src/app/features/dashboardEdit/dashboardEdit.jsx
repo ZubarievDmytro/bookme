@@ -92,6 +92,6 @@ const DashboardEdit = (props) => {
       <UserModal open={state.open} text="account" onModalClick={onModalClick} />
     </div>
   );
-}
+};
 
 export default DashboardEdit;

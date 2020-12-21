@@ -1,14 +1,14 @@
 import React from 'react';
 import { Container } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Header from './features/header';
-import Catalog from './features/catalog';
-import User from './features/user';
-import Dashboard from './features/dashboard';
-import DashboardEdit from './features/dashboardEdit';
-import SignUp from './features/signUp';
-import SignIn from './features/signIn';
-import history from '../history';
+import Header from './app/features/header';
+import Catalog from './app/features/catalog';
+import User from './app/features/user';
+import Dashboard from './app/features/dashboard';
+import DashboardEdit from './app/features/dashboardEdit';
+import SignUp from './app/features/signUp';
+import SignIn from './app/features/signIn';
+import history from './history';
 
 function App() {
   return (

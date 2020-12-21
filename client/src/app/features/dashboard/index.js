@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Dashboard from './dashboard';
+import Dashboard from './Dashboard';
 import { fetchSignedInUser, fetchBookingsByEmail } from '../../../actions';
 
 const mapStateToProps = (state) => {

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import GoogleAuth from './googleAuth';
+import GoogleAuth from './GoogleAuth';
 import { signIn, signOut, fetchUsers } from '../../../../actions';
 
 const mapStateToProps = (state) => {

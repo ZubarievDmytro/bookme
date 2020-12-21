@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import User from './user';
+import User from './User';
 import { fetchUserById, saveBooking } from '../../../actions';
 
 const mapStateToProps = (state, ownProps) => {

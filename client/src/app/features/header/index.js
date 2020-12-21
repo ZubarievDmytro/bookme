@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import header from './header';
+import header from './Header';
 import { signOut, fetchUsers, clearSignedInUser } from '../../../actions';
 
 const mapStateToProps = (state) => {
