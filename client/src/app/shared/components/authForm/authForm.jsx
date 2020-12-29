@@ -10,11 +10,6 @@ class AuthForm extends Component {
     this.id = uuid();
   }
 
-  componentDidMount() {
-    const { clearAuthError: clearAuthErrorProp } = this.props;
-    clearAuthErrorProp();
-  }
-
   renderInput = ({ input, label, meta, type = 'text' }) => {
     const classes = meta.error && meta.touched ? 'error' : '';
     const { name, value, onBlur: onBlurProp, onChange: onChangeProp } = input;

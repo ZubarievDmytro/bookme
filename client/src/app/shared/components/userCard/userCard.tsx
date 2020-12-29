@@ -16,8 +16,8 @@ const UserCard: React.FC<Props> = ({avatarUrl, name, description }) => {
     <Card>
       <Image src={avatarUrl || placeholderInfo.avatarUrl} wrapped ui={false} />
       <Card.Content>
-        <Card.Header>{name}</Card.Header>
-        <Card.Description>{description}</Card.Description>
+        <Card.Header content={name} />
+        <Card.Description content={description}/>
       </Card.Content>
     </Card>
   );

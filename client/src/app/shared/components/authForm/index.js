@@ -1,7 +1,5 @@
 import { reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
 import AuthForm from './AuthForm';
-import { clearAuthError } from '../../../../actions';
 
 const validate = (formValues) => {
   const errors = {};
@@ -12,9 +10,7 @@ const validate = (formValues) => {
   return errors;
 };
 
-export default connect(null, { clearAuthError })(
-  reduxForm({
-    validate,
-    form: 'authUserForm',
-  })(AuthForm)
-);
+export default reduxForm({
+  validate,
+  form: 'authUserForm',
+})(AuthForm);

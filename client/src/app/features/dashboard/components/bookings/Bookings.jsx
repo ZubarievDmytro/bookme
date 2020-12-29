@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Icon, Message } from 'semantic-ui-react';
+import { useDispatch, useSelector } from 'react-redux';
 import UserModal from '../../../../shared/components/userModal/index.ts';
+import { deleteBooking } from '../../../../shared/components/authForm/authSlice';
 
-const Bookings = (props) => {
+const Bookings = () => {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const fetchedBookings = useSelector((state) => state.auth.bookings);
+  const signedInUserBookings = useSelector((state) => state.auth.user.bookings);
   const [book, setBook] = useState(null);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState({ status: '', text: '' });
 
   useEffect(() => {
+    let timeout;
     if (message.text) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setMessage({ status: '', text: '' });
       }, 4000);
     }
+
+    return () => clearTimeout(timeout);
   }, [message.text]);
 
   const onDeleteClick = (booking) => {
@@ -24,9 +33,7 @@ const Bookings = (props) => {
     if (status === 'yes') {
       setOpen(false);
       setBook(null);
-
-      props
-        .deleteBooking(book, props.token)
+      dispatch(deleteBooking(book, token))
         .then(() => {
           setMessage({
             status: 'success',
@@ -63,8 +70,7 @@ const Bookings = (props) => {
   };
 
   const renderContent = (bookingType, title) => {
-    let { bookings } = props;
-    const { fetchedBookings } = props;
+    let bookings = [...signedInUserBookings];
     if (bookingType === 'fetchedBookings') {
       bookings = fetchedBookings.length ? fetchedBookings : [];
     }

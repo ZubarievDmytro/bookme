@@ -1,40 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { Grid, Loader, Divider, Button, Message } from 'semantic-ui-react';
+import { useSelector, useDispatch } from 'react-redux';
 import DateSelector from './components/dateSelector';
 import TimeSelector from './components/timeSelector';
 import UserCard from '../../shared/components/userCard/index.ts';
+import { fetchUserById, selectUser } from './userSlice';
+import { saveBooking } from '../../shared/components/authForm/authSlice';
 
 const User = (props) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const { saveBooking, signedInUser } = props;
-  const user = props.user || props.fetchedUser;
+  const fetchedUser = useSelector(selectUser);
+  const preloadedUser = useSelector(
+    (state) => state.usersCatalog.usersList[props.match.params.id]
+  );
+  const signedInUser = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const [message, setMessage] = useState({ status: '', text: '' });
+  const user = preloadedUser || fetchedUser;
 
   useEffect(() => {
+    let timeout;
     if (message.text) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setMessage({ status: '', text: '' });
       }, 4000);
     }
+
+    return () => clearTimeout(timeout);
   }, [message.text]);
 
   useEffect(() => {
-    if (_.isEmpty(props.user) && _.isEmpty(props.fetchedUser)) {
-      props.fetchUserById(props.match.params.id);
+    if (_.isEmpty(fetchedUser) && _.isEmpty(preloadedUser)) {
+      dispatch(fetchUserById(props.match.params.id));
     }
-  }, [props]);
+  });
 
   const onSaveBooking = () => {
     const [day, month, year] = date.split('/');
     const bookingDate = `${day}-${month}-${year}`;
 
-    saveBooking(user.id, {
-      time,
-      date: bookingDate,
-      user: signedInUser,
-    })
+    dispatch(
+      saveBooking(user.id, {
+        time,
+        date: bookingDate,
+        user: signedInUser,
+      })
+    )
       .then(() => {
         setMessage({
           status: 'success',

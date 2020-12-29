@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import { Card, Image, Button, Grid, Loader } from 'semantic-ui-react';
+import { useSelector } from 'react-redux';
 import Bookings from './components/bookings';
 
-const Dashboard = (props) => {
+const Dashboard = () => {
+  const { user, bookings } = useSelector((state) => state.auth);
+
   const placeholderInfo = {
     name: 'Your name will be here',
     description: 'No description yet',
@@ -12,16 +15,11 @@ const Dashboard = (props) => {
   };
   const [state, setState] = useState('loading');
 
-  useEffect(() => {
-    if (_.isEmpty(props.user))
-      props.fetchSignedInUser(props.userId, props.token);
-  });
-
   const handleImageLoad = () => {
     setState('loaded');
   };
 
-  const renderAvatar = (user) => {
+  const renderAvatar = () => {
     return (
       <>
         {state === 'loading' && (
@@ -40,7 +38,6 @@ const Dashboard = (props) => {
   };
 
   const renderContent = () => {
-    const { user } = props;
     if (_.isEmpty(user)) return <Loader active size="large" />;
 
     if (user) {
@@ -61,7 +58,7 @@ const Dashboard = (props) => {
             </Button>
           </Grid.Column>
           <Grid.Column width={11}>
-            <Bookings />
+            <Bookings bookings={user.bookings} fetchedBookings={bookings} />
           </Grid.Column>
         </Grid>
       );

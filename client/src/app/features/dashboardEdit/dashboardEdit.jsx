@@ -2,27 +2,26 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Grid, Loader, Button } from 'semantic-ui-react';
 import { Redirect, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import UserForm from './components/userForm';
 import UserModal from '../../shared/components/userModal/index.ts';
+import {
+  deleteUser,
+  updateUser,
+} from '../../shared/components/authForm/authSlice';
 
 const DashboardEdit = (props) => {
+  const dispatch = useDispatch();
+  const authInfo = useSelector((state) => state.auth);
+  const history = useHistory();
   const [state, setState] = useState({
     open: false,
     text: 'account',
   });
 
-  const history = useHistory();
-
-  useEffect(() => {
-    if (_.isEmpty(props.user))
-      props.fetchSignedInUser(props.userId, props.token);
-  });
-
   const onSubmit = async (formValues) => {
-    const res = await props.updateUser(
-      formValues,
-      props.match.params.id,
-      props.token
+    const res = await dispatch(
+      updateUser(formValues, props.match.params.id, authInfo.token)
     );
 
     history.push(res.redirectTo);
@@ -39,7 +38,9 @@ const DashboardEdit = (props) => {
       setState({
         open: false,
       });
-      const res = await props.deleteUser(props.match.params.id, props.token);
+      const res = await dispatch(
+        deleteUser(props.match.params.id, authInfo.token)
+      );
       history.push(res.redirectTo);
     } else {
       setState({
@@ -49,8 +50,7 @@ const DashboardEdit = (props) => {
   };
 
   const renderForm = () => {
-    const { user } = props;
-    if (_.isEmpty(user)) return <Loader active size="large" />;
+    if (_.isEmpty(authInfo.user)) return <Loader active size="large" />;
     const {
       avatarUrl,
       description,
@@ -58,7 +58,7 @@ const DashboardEdit = (props) => {
       profession,
       visible,
       schedule,
-    } = user;
+    } = authInfo.user;
     const initialValues = {
       avatarUrl,
       description,

@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import { Search as SemanticSearch } from 'semantic-ui-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUsers } from '../../../catalog/catalogSlice';
 
-const Search = (props) => {
+const Search = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [valueState, setValue] = useState('');
+  const users = Object.values(
+    useSelector((state) => state.usersCatalog.usersList)
+  );
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -22,15 +28,13 @@ const Search = (props) => {
     setValue(value);
 
     setTimeout(() => {
-      const { users } = props;
       if (value.length < 1 || !users) {
         setIsLoading(false);
         setResults([]);
         setValue('');
         return;
       }
-
-      const source = [...users].map((user) => {
+      const source = users.map((user) => {
         return {
           title: user.name,
           description: user.description,
@@ -48,8 +52,7 @@ const Search = (props) => {
   };
 
   const onFocus = () => {
-    const { users, fetchUsers } = props;
-    if (!users.length) fetchUsers();
+    if (!users.length) dispatch(fetchUsers());
   };
 
   return (

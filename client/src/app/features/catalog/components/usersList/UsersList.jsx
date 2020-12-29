@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
 import { Card, Button, Image, Loader } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUsers, selectUsers } from '../../catalogSlice';
 
-const UsersList = (props) => {
-  const { users, userId } = props;
+const UsersList = () => {
+  const userId = localStorage.getItem('userId');
+  const users = Object.values(useSelector(selectUsers));
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (!users.length) props.fetchUsers();
-  });
+    if (!users.length) dispatch(fetchUsers());
+  }, [dispatch, users.length]);
 
   const renderUsers = () => {
     if (!users.length) return <Loader active size="large" />;

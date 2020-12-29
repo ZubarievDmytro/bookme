@@ -1,13 +1,17 @@
 import React from 'react';
 import { Divider } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import AuthForm from '../../shared/components/authForm';
+import { authUser } from '../../shared/components/authForm/authSlice';
 
-const SignUp = ({ auth, error, ...props }) => {
+const SignUp = () => {
   const history = useHistory();
-
+  const authUserForm = useSelector((state) => state.form.authUserForm);
+  const error = useSelector((state) => state.auth.error);
+  const dispatch = useDispatch();
   const onSubmit = async () => {
-    const res = await props.signUp(auth.values);
+    const res = await dispatch(authUser(authUserForm.values, 'signup'));
     history.push(res.redirectTo);
   };
 

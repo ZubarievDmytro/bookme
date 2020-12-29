@@ -1,24 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import thunk from 'redux-thunk';
 import 'semantic-ui-css/semantic.min.css';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
 import App from './App';
-import reducers from './reducers';
-import { fetchSignedInUser } from './actions';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-  reducers,
-  {
-    auth: {
-      token: localStorage.getItem('token'),
-      userId: localStorage.getItem('userId'),
-    },
-  },
-  composeEnhancers(applyMiddleware(thunk))
-);
+import { fetchSignedInUser } from './app/shared/components/authForm/authSlice';
+import store from './app/store';
 
 if (localStorage.getItem('token') && localStorage.getItem('userId')) {
   store.dispatch(

@@ -1,12 +1,15 @@
 import React from 'react';
 import { Menu, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Search from './components/search';
+import { signedOut } from '../../shared/components/authForm/authSlice';
 
-const Header = ({ userId, users, isSignedIn, fetchUsers, ...props }) => {
+const Header = ({ users, fetchUsers }) => {
+  const dispatch = useDispatch();
+  const { token: isSignedIn, user } = useSelector((state) => state.auth);
   const onSignOutClick = () => {
-    props.signOut();
-    props.clearSignedInUser();
+    dispatch(signedOut());
   };
 
   const renderAuthButtons = () => {
@@ -34,7 +37,9 @@ const Header = ({ userId, users, isSignedIn, fetchUsers, ...props }) => {
   return (
     <Menu>
       <Menu.Item as={Link} to="/" name="home" />
-      {userId && <Menu.Item as={Link} to="/dashboard" name="dashboard" />}
+      {user && user.id && (
+        <Menu.Item as={Link} to="/dashboard" name="dashboard" />
+      )}
       <Menu.Menu position="right">
         <Menu.Item>
           <Search users={users} fetchUsers={fetchUsers} />
