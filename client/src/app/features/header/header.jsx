@@ -2,14 +2,20 @@ import React from 'react';
 import { Menu, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useGoogleLogout } from 'react-google-login';
 import Search from './components/search';
 import { signedOut } from '../../shared/components/authForm/authSlice';
 
-const Header = ({ users, fetchUsers }) => {
+const Header = () => {
   const dispatch = useDispatch();
+  const clientId =
+    '933713769986-sc19lpemkpj7p3kmq4l4d1knekrr1q7i.apps.googleusercontent.com';
+
+  const { signOut } = useGoogleLogout({ clientId });
   const { token: isSignedIn, user } = useSelector((state) => state.auth);
   const onSignOutClick = () => {
     dispatch(signedOut());
+    signOut();
   };
 
   const renderAuthButtons = () => {
@@ -42,7 +48,7 @@ const Header = ({ users, fetchUsers }) => {
       )}
       <Menu.Menu position="right">
         <Menu.Item>
-          <Search users={users} fetchUsers={fetchUsers} />
+          <Search />
         </Menu.Item>
         <Menu.Item>
           <Button.Group>{renderAuthButtons()}</Button.Group>

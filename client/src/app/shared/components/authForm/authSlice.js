@@ -135,10 +135,24 @@ export const fetchSignedInUser = (userId, token) => async (dispatch) => {
 };
 
 export const authUser = (formProps, type) => async (dispatch) => {
-  const res =
-    type === 'signin'
-      ? await users.post('/signin', formProps)
-      : await users.post('/signup', formProps);
+  let res = null;
+  const email = formProps.email || formProps.profileObj.email;
+
+  if (type === 'google') {
+    res = await users.post(
+      '/signinGoogle',
+      {
+        headers: {
+          token: formProps.tokenId,
+        },
+      },
+      formProps.profileObj
+    );
+  } else if (type === 'signin') {
+    res = await users.post('/signin', formProps);
+  } else if (type === 'signup') {
+    res = await users.post('/signup', formProps);
+  }
 
   if (res.data.error) {
     dispatch(authError(res.data.error));
@@ -146,7 +160,7 @@ export const authUser = (formProps, type) => async (dispatch) => {
   }
   const bookings = await users.get(`/bookings/`, {
     headers: {
-      email: formProps.email,
+      email,
     },
   });
   dispatch(signedIn(res.data));

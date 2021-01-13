@@ -32,8 +32,8 @@ class AuthForm extends Component {
   };
 
   onSumbit = () => {
-    const { onSubmit: onSubmitProp } = this.props;
-    onSubmitProp();
+    const { onSubmit } = this.props;
+    onSubmit();
   };
 
   renderError = ({ error, touched }) => {
@@ -48,14 +48,10 @@ class AuthForm extends Component {
   };
 
   render() {
-    const {
-      handleSubmit: handleSubmitProp,
-      errorText,
-      buttonText,
-    } = this.props;
+    const { handleSubmit, errorText, buttonText } = this.props;
     return (
       <>
-        <Form onSubmit={handleSubmitProp(this.onSumbit)}>
+        <Form onSubmit={handleSubmit(this.onSumbit)}>
           <Form.Group widths="4">
             <Field name="email" label="Email" component={this.renderInput} />
           </Form.Group>
