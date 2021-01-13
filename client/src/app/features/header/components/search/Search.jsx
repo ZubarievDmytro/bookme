@@ -27,28 +27,26 @@ const Search = () => {
     setIsLoading(true);
     setValue(value);
 
-    setTimeout(() => {
-      if (value.length < 1 || !users) {
-        setIsLoading(false);
-        setResults([]);
-        setValue('');
-        return;
-      }
-      const source = users.map((user) => {
-        return {
-          title: user.name,
-          description: user.description,
-          id: user.id,
-          key: user.id,
-        };
-      });
-
-      const re = new RegExp(_.escapeRegExp(valueState), 'i');
-      const isMatch = (result) => re.test(result.title);
-
+    if (value.length < 1 || !users) {
       setIsLoading(false);
-      setResults(_.filter(source, isMatch));
-    }, 300);
+      setResults([]);
+      setValue('');
+      return;
+    }
+    const source = users.map((user) => {
+      return {
+        title: user.name,
+        description: user.description,
+        id: user.id,
+        key: user.id,
+      };
+    });
+
+    const re = new RegExp(_.escapeRegExp(valueState), 'i');
+    const isMatch = (result) => re.test(result.title);
+
+    setIsLoading(false);
+    setResults(_.filter(source, isMatch));
   };
 
   const onFocus = () => {

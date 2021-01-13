@@ -63,6 +63,7 @@ const Bookings = () => {
             floated="right"
             color="red"
             name="window close outline"
+            data-testid="delete_booking"
           />
         )}
       </p>
@@ -105,7 +106,9 @@ const Bookings = () => {
     return (
       <>
         <h3>{title}</h3>
-        <Card.Group itemsPerRow={3}>{bookings}</Card.Group>
+        <Card.Group itemsPerRow={3} className={bookingType}>
+          {bookings}
+        </Card.Group>
       </>
     );
   };

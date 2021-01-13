@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import _ from 'lodash';
 import users from '../../../apis/users';
 
 export const userSlice = createSlice({

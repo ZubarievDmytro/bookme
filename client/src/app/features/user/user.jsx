@@ -4,7 +4,7 @@ import { Grid, Loader, Divider, Button, Message } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux';
 import DateSelector from './components/dateSelector';
 import TimeSelector from './components/timeSelector';
-import UserCard from '../../shared/components/userCard/index.ts';
+import UserCard from '../../shared/components/userCard';
 import { fetchUserById, selectUser } from './userSlice';
 import { saveBooking } from '../../shared/components/authForm/authSlice';
 
@@ -19,6 +19,9 @@ const User = (props) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState({ status: '', text: '' });
   const user = preloadedUser || fetchedUser;
+  const imConfig = {
+    location: 'outside',
+  };
 
   useEffect(() => {
     let timeout;
@@ -67,24 +70,11 @@ const User = (props) => {
       return (
         <Grid columns="two" divided>
           <Grid.Column width={5}>
-            <UserCard
-              name={user.name}
-              description={user.description}
-              avatarUrl={user.avatarUrl}
-            />
+            <UserCard user={user} imConfig={imConfig} />
           </Grid.Column>
           <Grid.Column width={11}>
-            <DateSelector
-              user={user}
-              date={date}
-              signedInUser={signedInUser}
-              onChange={(value) => setDate(value)}
-            />
-            <TimeSelector
-              user={user}
-              signedInUser={signedInUser}
-              onChange={(value) => setTime(value)}
-            />
+            <DateSelector date={date} onChange={(value) => setDate(value)} />
+            <TimeSelector user={user} onChange={(value) => setTime(value)} />
             <Divider />
             <Message
               className={message.status}

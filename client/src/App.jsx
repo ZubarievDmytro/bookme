@@ -10,7 +10,7 @@ import SignUp from './app/features/signUp';
 import SignIn from './app/features/signIn';
 import history from './history';
 
-function App() {
+const App = () => {
   return (
     <Container>
       <Router history={history}>
@@ -26,6 +26,6 @@ function App() {
       </Router>
     </Container>
   );
-}
+};
 
 export default App;

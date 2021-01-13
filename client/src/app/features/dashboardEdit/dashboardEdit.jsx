@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { Grid, Loader, Button } from 'semantic-ui-react';
 import { Redirect, useHistory } from 'react-router-dom';
