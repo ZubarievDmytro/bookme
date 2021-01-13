@@ -3,17 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.5.0",
+    "@testing-library/react": "^11.2.3",
     "axios": "^0.19.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "history": "^5.0.0",
     "lodash": "^4.17.15",
     "moment": "^2.29.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-google-login": "^5.2.2",
     "react-redux": "^7.1.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.2.0",
     "react-semantic-redux-form": "^1.2.6",
+    "react-test-renderer": "^17.0.1",
     "redux": "^4.0.4",
     "redux-form": "^8.1.0",
     "redux-thunk": "^2.3.0",
@@ -25,7 +31,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --watchAll",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -47,6 +53,13 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.6.0",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.6",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
@@ -54,8 +67,10 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "husky": "^4.3.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
     "lint-staged": "^10.5.0",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.5"
   },
   "husky": {
     "hooks": {
@@ -66,6 +81,13 @@
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier — single-quote — write",
       "git add"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!src/**/index.{ts,js}"
     ]
   }
 }
